@@ -140,24 +140,3 @@ class Ray2D :
 
         self.ParmEquation[1].x = round(x*cos(angle) - y*sin(angle),2)
         self.ParmEquation[1].y = round(x*sin(angle) + y*cos(angle),2)
-
-
-
-pygame.init()
-Map1 = MapCreator().createMapFromTab([[1,1,1,1,1,1,1,1,1,1],[1,0,0,1,1,0,0,0,1,1],[1,0,0,1,1,0,0,0,1,1],[1,0,0,0,0,0,0,0,0,1],[1,0,0,1,1,0,0,0,1,1],[1,0,0,1,1,0,0,0,1,1],[1,0,0,1,1,0,0,0,1,1],[1,0,0,1,1,0,0,0,1,1],[1,0,0,1,1,0,0,0,1,1],[1,0,0,1,1,0,0,0,1,1]])
-RealScaleMap = RealMap(Map1, 1000)
-Game1 = Game(1280,720,RealScaleMap)
-Perso = POV(80,Game1)
-
-pygame.display.set_mode(Game1.resolution)
-
-running = True
-
-def display(scans) :
-    for i in scans :
-        
-
-
-while running :
-    
-
