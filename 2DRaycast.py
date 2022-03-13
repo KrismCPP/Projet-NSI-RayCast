@@ -1,4 +1,3 @@
-from cProfile import run
 from cmath import pi, sqrt
 from math import cos, sin
 import pygame
