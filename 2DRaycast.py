@@ -89,10 +89,10 @@ class POV :
         mainRay = Ray2D(Vector2D(1,0),self)
         mainRay.rotateRay(self.camAngle*(pi/180))
         for i in range ((-self.FOV*self.Game.resolution[0]//2)//2,(self.FOV*self.Game.resolution[0]//2)//2):
-            a = (i/self.Game.resolution[0]) * (self.FOV/self.Game.resolution[0]) 
+            angle = (i/self.Game.resolution[0]) * (self.FOV/self.Game.resolution[0]) 
             VectorForNewRay = mainRay.ParmEquation[1]
             Ray = Ray2D(VectorForNewRay,self)
-            Ray2D.rotateRay(a*(pi/180))
+            Ray2D.rotateRay(angle*(pi/180))
             scans += [Ray2D.intersection(Game.RealMap)[1]]
         return scans
 
