@@ -39,7 +39,7 @@ def touche_selec():
 
 x=0
 while x<1:
-    init_graphic(750,750,name="Pokéban",bg_color=pygame.Color(206,206,206),fullscreen=0)
+    init_graphic(750,750,bg_color=pygame.Color(206,206,206),fullscreen=0)
 
     for i in range(50):
         draw_pixel(i,150,pygame.Color(0,0,0))
