@@ -51,7 +51,7 @@ def touche_selec():
                         return("hack")
 
 while run :
-    init_graphic(640,480,name="Pokéban",bg_color=pygame.Color(206,206,206),fullscreen=0)
+    init_graphic(640,480,bg_color=pygame.Color(206,206,206),fullscreen=0)
     game.player.display_update()
 
     key = touche_selec()
@@ -61,5 +61,4 @@ while run :
         pygame.quit()
         exit()
     elif key == 'enter':
-        #Ferme la fenêtre graphique
         continue
