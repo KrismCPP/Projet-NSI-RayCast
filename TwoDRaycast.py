@@ -18,15 +18,17 @@ class Player :
         self.map = map
     
     def Move(self,speed) :
+        '''Fait déplacer le personnage'''
         self.pos.x += self.dir.x * speed
         self.pos.y += self.dir.y * speed
 
     def Rotate(self, angle) :
+        '''fait tourner le personnage'''
         self.angle += angle
         self.dir = rotateVector(Vector2D(1,0),self.angle*math.pi/180)
    
     def drawRay(self, Vector) :
-        '''Dessine un Ray à partir d'un point nommé Vector appartenant à la classe Vector2D'''
+        '''Dessine un Ray partant de la position du personnage à un point nommé Vector appartenant à la classe Vector2D'''
         pygame.draw.line(window,pygame.Color(0,0,255),(self.pos.x, self.pos.y),(Vector.x,Vector.y),1)
 
     def drawAllRays(self) :
@@ -63,9 +65,10 @@ class Player :
                 
                 i += 1
                 
-                #
+                #trouve la multiplication nécessaire pour trouver où se trouve les murs
                 facteurx = floor(posx+i)-posx
-
+                
+                #Les nouvels coordonnées
                 x1 = newVector.x*facteurx+posx
                 y1 = newVector.y*facteurx+posy
 
@@ -126,6 +129,7 @@ map = stringToList([
 window = pygame.display.set_mode((480,480))
 
 def displayAll(map,player) :
+    '''permet de dessiner toutes les informations en 2D'''
     for i in range (len(map)) :
         for j in range (len(map[i])) :
             if map[i][j] == "#" :
@@ -134,7 +138,11 @@ def displayAll(map,player) :
                 pygame.draw.rect(window,pygame.Color(255,255,255),(480/10*j,480/10*i,int(480/10),int(480/10)))
     pygame.draw.circle(window,pygame.Color(255,0,0),(int(player.pos.x),int(player.pos.y)),5)
     player.drawAllRays()
+
+    
 player = Player(90,0,480//2,480//2,map)
+
+
 while True :
     for i in pygame.event.get() :
         if i.type == pygame.QUIT :
