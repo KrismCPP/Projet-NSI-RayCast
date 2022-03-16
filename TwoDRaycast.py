@@ -24,20 +24,25 @@ class Player :
     def Rotate(self, angle) :
         self.angle += angle
         self.dir = rotateVector(Vector2D(1,0),self.angle*math.pi/180)
-    
+   
     def drawRay(self, Vector) :
+        '''Dessine un Ray à partir d'un point nommé Vector appartenant à la classe Vector2D'''
         pygame.draw.line(window,pygame.Color(0,0,255),(self.pos.x, self.pos.y),(Vector.x,Vector.y),1)
 
     def drawAllRays(self) :
+        '''Dessine tous les rays en prenant compte des obstacles'''
+        #Permet de dessiner tous les rays nécessaire pour un champ de vision
         for i in range(-self.fov//2, self.fov//2) :
-            
+            #passe l'angle en radiant
             angle = i * math.pi/180
-
+            
+            #créer un nouveau vecteur à partir du vecteur directeur du personnage tourné d'angle radiant
             newVector = rotateVector(self.dir,angle)
-
+            
             posx = self.pos.x 
             posy = self.pos.y 
 
+            #le nombre d'itérations
             i = 0
 
             distancex = 0
@@ -49,14 +54,16 @@ class Player :
             x2 = 0
             y2 = 0
 
-            
+            #permettra de vérifier si aux coordonnées x et y il y a un mur 
             cadrex = floor(posx/ 480 * len(self.map))
             cadrey = floor(posy/ 480 * len(self.map))
-
+            
+            #trouve un mur sur l'axe des x
             while self.map[cadrey][cadrex] != "#" :
-
+                
                 i += 1
                 
+                #
                 facteurx = floor(posx+i)-posx
 
                 x1 = newVector.x*facteurx+posx
@@ -75,7 +82,7 @@ class Player :
 
             cadrex = floor(posx/ 480 * len(self.map))
             cadrey = floor(posy/ 480 * len(self.map))
-
+            #trouve un mur sur l'axe des y
             while self.map[cadrey][cadrex] != "#" :
                 i += 1
                 
@@ -90,7 +97,7 @@ class Player :
 
                     distancey = math.sqrt((posx - x2)**2 + (posy - y2)**2)
                 
-
+            #vérifie quel mur est le plus proche
             if distancex > distancey :
                 self.drawRay(Vector2D(x2,y2))
             else : 
