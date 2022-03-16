@@ -1,3 +1,5 @@
+# echap = quit  / resolution fix : height = 1920 / width = 1080
+
 from math import floor
 from tracemalloc import start
 from matplotlib.pyplot import draw
