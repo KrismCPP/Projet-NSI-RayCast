@@ -35,13 +35,14 @@ class Player :
 
     def scanWalls(self) :
         walls = []
-        for i in range(-self.fov//2, self.fov//2) :
+        for i in range(-self.fov, self.fov) :
             
-            angle = i * math.pi/180
+            a = i/2
+            angle = a * math.pi/180
 
             newVector = rotateVector(self.dir,angle)
 
-            walls += [self.distance(self.findWall(newVector))*math.cos(angle)]
+            walls += [self.distance(self.findWall(newVector))]
         return walls
 
     def findWall(self,Vector) :
@@ -124,10 +125,9 @@ def displayAll(map,player,window) :
     for i in range (len(map)) :
         for j in range (len(map[i])) :
             if map[i][j] == "#" :
-                pygame.draw.rect(window,pygame.Color(0,0,0),(480/10*j,480/10*i,int(480/10),int(480/10)))
+                pygame.draw.rect(window,pygame.Color(0,0,0),(480/len(map)*j,480/len(map)*i,int(480/len(map)),int(480/len(map))))
             else :
-                pygame.draw.rect(window,pygame.Color(255,255,255),(480/10*j,480/10*i,int(480/10),int(480/10)))
+                pygame.draw.rect(window,pygame.Color(255,255,255),(480/len(map)*j,480/len(map)*i,int(480/len(map)),int(480/len(map))))
     pygame.draw.circle(window,pygame.Color(255,0,0),(int(player.pos.x),int(player.pos.y)),5)
     player.drawAllRays()
     
-
