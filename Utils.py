@@ -1,6 +1,3 @@
-
-
-
 import math
 
 
@@ -20,4 +17,3 @@ def rotateVector(Vector,angle) :
     y1 = Vector.y
 
     return Vector2D(round(x1*math.cos(angle) - y1*math.sin(angle),5), round(x1*math.sin(angle) + y1*math.cos(angle),5))
-
