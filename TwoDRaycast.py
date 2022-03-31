@@ -7,14 +7,12 @@ import pygame
 
 pygame.init()
 
-class Player :
-    def __init__(self,fov,angle,x,y,map,window) -> None:
-        self.fov = fov #Champ de vision du Joueur
-        self.angle = angle #Direction où pointe Joueur
+class Entity :
+    def __init__(self,x,y,map,angle) :
         self.pos = Vector2D(x,y) #Position du Joueur
+        self.angle = angle #Direction où pointe Joueur
         self.dir = rotateVector(Vector2D(1,0),angle*math.pi/180) #Vecteur du directeur par rapport à la direction où pointe Joueur
         self.map = map
-        self.window = window #Fenêtre Graphique
 
     def Move(self,speed) :
         """ Déplacer le joueur selon la distance donnée sur l'axe y :
@@ -23,6 +21,19 @@ class Player :
         """
         self.pos.x += self.dir.x * speed
         self.pos.y += self.dir.y * speed
+
+    def distance(self, Vector) -> float:
+        """ Renvoie la distance entre la pos du joueur et le point Vector"""
+        return math.sqrt((self.pos.x - Vector.x)**2 + (self.pos.y - Vector.y)**2)
+
+
+class Player(Entity):
+    def __init__(self,fov,angle,x,y,map,window) -> None:
+        self.fov = fov #Champ de vision du Joueur
+        self.window = window #Fenêtre Graphique
+        super().__init__(x,y,map,angle)
+
+    
 
     def Rotate(self, angle) :
         """ Modifie où pointe le joueur selon l'angle donnée :
@@ -36,9 +47,7 @@ class Player :
         """ Trace une ligne entre la pos du joueur et le point Vector """
         pygame.draw.line(self.window,pygame.Color(0,0,255),(self.pos.x, self.pos.y),(Vector.x,Vector.y),1)
 
-    def distance(self, Vector) -> float:
-        """ Renvoie la distance entre la pos du joueur et le point Vector"""
-        return math.sqrt((self.pos.x - Vector.x)**2 + (self.pos.y - Vector.y)**2)
+
 
     def findWall(self,Vector) :
         """ Prend en argument un Vecteur
