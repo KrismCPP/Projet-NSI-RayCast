@@ -1,17 +1,18 @@
+"""Programme Principal du Jeu - Rendu 3D"""
+
+'''IMPORTATION DES MODULES'''
+
 from math import floor
 from Utils import *
+import time
 import TwoDRaycast
 import pygame
 
 
-pygame.init()
-
-
-#Fenetre Graphique
-window = pygame.display.set_mode((1280,962))
+'''Classe'''
 
 class Camera (TwoDRaycast.Player) :
-    ''' Classe Fille de Player'''
+    """ Classe Fille de Player """
     def __init__(self, fov, angle, x, y, map, window,resolution) -> None:
         super().__init__(fov, angle, x, y, map, window)
         self.resolution = resolution
@@ -57,7 +58,16 @@ class Camera (TwoDRaycast.Player) :
             # Affiche une ligne du rendu 3D
             pygame.draw.line(self.window,color,(startHeightPoint.x,startHeightPoint.y),(endHeightPoint.x,endHeightPoint.y),int(duplicateLines))
 
+''' Main '''
 
+#______________## INITIALISATION DU JEU ##______________#
+
+
+#Fenetre Graphique
+pygame.init()
+window = pygame.display.set_mode((1280,962))
+
+# Map Sous forme de Liste de Liste
 map = stringToList([
     "#############",
     "#   #       #",
@@ -74,10 +84,21 @@ map = stringToList([
     "#############"
     ])
 
-
+# Init du joueur
 player = Camera(90,0,480//2,480//2,map,window,(1280,962))
 
+# Init des configurations du Monstre
+monstre = TwoDRaycast.Monster(0,(480//2,480//2),(floor(player.pos.x/ 480 * len(map)),floor(player.pos.y/ 480 * len(map))),map,window)
+depart = time.time() # Début du chronomètre
+monster_arrival_time = 10 # en secondes
+nb_dep = 0 # Déplacement du Monstre en fonction du nb de dep du Joueur
+
+
+#______________## PROGRAMME PRINCIPAL ##______________#
+
 while True :
+
+    # Si l'utilisateur ferme la fenêtre
     for i in pygame.event.get() :
         if i.type == pygame.QUIT :
             pygame.quit()
@@ -90,16 +111,75 @@ while True :
     #Lance le Rendu 3D
     player.render3D(player.scanWalls())
 
-    #Lance le Rendu 2D
-    TwoDRaycast.displayAll(map,player,window)
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_q] :
-        player.Rotate(-5)
-    elif keys[pygame.K_d]:
-        player.Rotate(5)
-    elif keys[pygame.K_z]:
-        player.Move(5)
-    elif keys[pygame.K_s]:
-        player.Move(-5)
 
+    ''' TOUCHES ORDINAIRES '''
+    # Tourne à gauche
+    if keys[pygame.K_q] :
+        player.rotate(-10)
+
+    # Tourne à droite
+    elif keys[pygame.K_d]:
+        player.rotate(10)
+
+    # Avance
+    elif keys[pygame.K_z]:
+        player.move(5)
+        nb_dep += 1
+
+    # Recule
+    elif keys[pygame.K_s]:
+        player.move(-5)
+        nb_dep += 1
+    # Lance le Rendu 2D si TAB est appuyée
+    elif keys[pygame.K_TAB]:
+        TwoDRaycast.displayAll(map,player,window)
+
+
+
+    ''' TOUCHES SOUS PYGAME'''
+    """
+    # Tourne à gauche
+    if keys[pygame.K_a] :
+        player.rotate(-10)
+
+    # Tourne à droite
+    elif keys[pygame.K_d]:
+        player.rotate(10)
+
+    # Avance
+    elif keys[pygame.K_w]:
+        player.move(5)
+        nb_dep += 1
+
+    # Recule
+    elif keys[pygame.K_s]:
+        player.move(-5)
+        nb_dep += 1
+    # Lance le Rendu 2D si TAB est appuyée
+    elif keys[pygame.K_TAB]:
+        TwoDRaycast.displayAll(map,player,window)
+    """
+
+
+    # Si le temps "inoffensif" est dépassé
+    if time.time() - depart > monster_arrival_time :
+
+        # Tous les 5 déplacements du Joueur, le monstre se déplace
+        if nb_dep >= 5 :
+
+            # On cherche le chemin pour atteindre le joueur
+            path = monstre.path_finding((player.pos.x,player.pos.y) )
+            if not path :
+                # Si le Monstre et sur la case du Joueur
+                print("GAME OVER")
+                pygame.quit()
+                exit()
+            else :
+                # On déplace la position du Monstre
+                monstre.move(path[0])
+
+            # On réinitilise le nombre de déplacement du Joueur
+            nb_dep = 0
+            
