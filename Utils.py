@@ -1,11 +1,15 @@
+"""Classe et Fonctions utiles au fonctionnement du Jeu"""
+
+'''IMPORTATION DES MODULES'''
 import math
 
 
+'''Classe /  Fonctions '''
 
 class Vector2D :
     def __init__(self,x,y) :
-        self.x = x 
-        self.y = y 
+        self.x = x
+        self.y = y
 
 def stringToList(map) :
     for i in range (len(map)) :
