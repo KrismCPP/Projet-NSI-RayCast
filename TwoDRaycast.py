@@ -217,7 +217,7 @@ class Monster (Entity) :
 
                 '''Stockage du nouveau chemin avec les autres possibilités'''
                 for coord in next_pos:
-                    newPath = [path]
+                    newPath = list(path)
                     newPath.append(coord)
                     paths_possibilities.append(newPath)
 
