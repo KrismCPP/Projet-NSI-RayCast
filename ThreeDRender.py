@@ -3,6 +3,8 @@
 '''IMPORTATION DES MODULES'''
 
 from math import floor
+from tracemalloc import start
+from turtle import screensize
 from Utils import *
 import time
 import TwoDRaycast
@@ -22,10 +24,6 @@ class Camera (TwoDRaycast.Player) :
         halfScreen = self.resolution[1]//2
         height = (962//30*self.resolution[1])/distance
 
-        if height > self.resolution[1] :
-            #Si la hauteur du mur est supérieure à la résolution du mur
-            height = self.resolution[1]
-
         StartHeight = halfScreen - height//2
         EndHeight = halfScreen + height//2
 
@@ -36,7 +34,31 @@ class Camera (TwoDRaycast.Player) :
         blacktone = floor(distance/480 * 300)
         if blacktone > 255:
             blacktone = 255
-        return pygame.Color(255-blacktone,255-blacktone,255-blacktone)
+        return 255-blacktone
+
+    def GetPartOfWall(self, point, texture) :
+        """ Retourne la partie du mur texturé """
+        #Adapte les coordonnés du point pour qu'il soit utilisable
+        pointModifie = point
+        while pointModifie.y >= 48 :
+            pointModifie.x -= 48
+            pointModifie.y -= 48
+        #Trouve la partie de la texture
+        part = int(pointModifie.y/48 *len(texture))
+        return texture[part]
+
+    def drawTexturedLine(self,point,distance,duplicateLines,texture,partOfScreen) :
+        """ Dessine la ligne des textures """
+        height = self.GetHeight(distance)
+        lenHeight = height[1]-height[0]
+        line = self.GetPartOfWall(point,texture)
+        toDark = self.GetBlackTone(distance)/255
+        for i in range (len(line)) :
+            startPoint = Vector2D(partOfScreen*int(duplicateLines),i/len(line)*lenHeight+height[0])
+            endPoint = Vector2D(partOfScreen*int(duplicateLines),(i+1)/len(line)*lenHeight+height[0])
+            pygame.draw.line(self.window,pygame.Color(int(line[i][0]*255*toDark),int(line[i][1]*255*toDark),int(line[i][2]*255*toDark)),(startPoint.x,startPoint.y),(endPoint.x,+endPoint.y),int(duplicateLines))
+        #Trouve un point sur l'axe x en l'adaptant à la résolution
+
 
 
     def render3D(self, scans : list) :
@@ -46,17 +68,7 @@ class Camera (TwoDRaycast.Player) :
         #Adapte l'affiche des murs selon la résolution
         duplicateLines = math.ceil(1/len(scans)*self.resolution[0])
         for i in range (len(scans)) :
-            height = self.GetHeight(scans[i])
-
-            #Trouve un point sur l'axe x en l'adaptant à la résolution
-            startHeightPoint = Vector2D(i*int(duplicateLines),height[0])
-            endHeightPoint = Vector2D(i*int(duplicateLines),height[1])
-
-
-            color = self.GetBlackTone(scans[i])
-
-            # Affiche une ligne du rendu 3D
-            pygame.draw.line(self.window,color,(startHeightPoint.x,startHeightPoint.y),(endHeightPoint.x,endHeightPoint.y),int(duplicateLines))
+            self.drawTexturedLine(scans[i][1],scans[i][0],duplicateLines,Wall,i)
 
 ''' Main '''
 
@@ -65,7 +77,7 @@ class Camera (TwoDRaycast.Player) :
 
 #Fenetre Graphique
 pygame.init()
-window = pygame.display.set_mode((1280,962))
+window = pygame.display.set_mode((640,480))
 
 # Map Sous forme de Liste de Liste
 map = stringToList([
@@ -85,7 +97,7 @@ map = stringToList([
     ])
 
 # Init du joueur
-player = Camera(90,0,480//2,480//2,map,window,(1280,962))
+player = Camera(90,0,480//2,480//2,map,window,(640,480))
 
 # Init des configurations du Monstre
 monstre = TwoDRaycast.Monster(0,(480//2,480//2),(floor(player.pos.x/ 480 * len(map)),floor(player.pos.y/ 480 * len(map))),map,window)
@@ -106,14 +118,13 @@ while True :
 
     #Permet d'actualiser la Page
     pygame.display.flip()
-    pygame.draw.rect(window,pygame.Color(0,0,0),(0,0,int(1280),int(962)),0)
+    pygame.draw.rect(window,pygame.Color(0,0,0),(0,0,int(640),int(480)),0)
 
     #Lance le Rendu 3D
     player.render3D(player.scanWalls())
 
-
     keys = pygame.key.get_pressed()
-
+    
     ''' TOUCHES ORDINAIRES '''
     # Tourne à gauche
     if keys[pygame.K_q] :
@@ -159,7 +170,7 @@ while True :
         nb_dep += 1
     # Lance le Rendu 2D si TAB est appuyée
     elif keys[pygame.K_TAB]:
-        TwoDRaycast.displayAll(map,player,window)
+        TwoDRaycast.displayAll(map,player, monstre ,window)
     """
 
 
@@ -174,12 +185,13 @@ while True :
             if not path :
                 # Si le Monstre et sur la case du Joueur
                 print("GAME OVER")
-                pygame.quit()
-                exit()
             else :
                 # On déplace la position du Monstre
                 monstre.move(path[0])
 
             # On réinitilise le nombre de déplacement du Joueur
             nb_dep = 0
-            
+
+
+
+

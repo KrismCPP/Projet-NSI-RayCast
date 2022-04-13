@@ -32,15 +32,11 @@ class Player(Entity):
         Reculer : speed < 0
         """
         if speed > 0:
-            if self.distance(self.findWall(rotateVector(Vector2D(1,0),(self.angle+90)*math.pi/180))) > 1 and \
-                    self.distance(self.findWall(rotateVector(Vector2D(1,0),(self.angle-90)*math.pi/180))) > 1 and \
-                    self.distance(self.findWall(rotateVector(Vector2D(1,0),(self.angle)*math.pi/180))) - self.dir.x * speed > 6:
+            if self.distance(self.findWall(rotateVector(Vector2D(1,0),(self.angle)*math.pi/180))) > 5 :
                 self.pos.x += self.dir.x * speed
                 self.pos.y += self.dir.y * speed
         if speed < 0:
-            if self.distance(self.findWall(rotateVector(Vector2D(-1,0),(self.angle+90)*math.pi/180))) > 1 and \
-                    self.distance(self.findWall(rotateVector(Vector2D(-1,0),(self.angle-90)*math.pi/180))) > 1 and \
-                    self.distance(self.findWall(rotateVector(Vector2D(-1, 0), (self.angle) * math.pi / 180))) - self.dir.x * speed > 6 :
+            if self.distance(self.findWall(rotateVector(Vector2D(-1,0),(self.angle)*math.pi/180))) > 5 :
                 self.pos.x += self.dir.x * speed
                 self.pos.y += self.dir.y * speed
 
@@ -61,7 +57,7 @@ class Player(Entity):
 
     def drawRay(self, Vector) :
         """ Trace une ligne entre la pos du joueur et le point Vector """
-        pygame.draw.line(self.window,pygame.Color(0,0,255),(self.pos.x, self.pos.y),(Vector.x,Vector.y),1)
+        pygame.draw.line(self.window,pygame.Color(0,0,255),(self.pos.x/3, self.pos.y/3),(Vector.x/3,Vector.y/3),1)
 
 
     def findWall(self,Vector) :
@@ -150,7 +146,9 @@ class Player(Entity):
             #Pointe vers la valeur i
             newVector = rotateVector(self.dir,angle_radius)
 
-            walls += [self.distance(self.findWall(newVector))]
+            wallFound = self.findWall(newVector)
+
+            walls += [(self.distance(wallFound),wallFound)]
         return walls
 
 
@@ -180,6 +178,7 @@ class Monster (Entity) :
         """ Prend en argument un tuple
         Déplace l'indice du Monstre à celle indiquée"""
         self.pos_list = new_pos
+        self.pos.x,self.pos.y = self.pos_list[1]*48,self.pos_list[0]*48
 
     def path_finding(self,pos_player):
         """
@@ -199,7 +198,6 @@ class Monster (Entity) :
                 path = [paths_possibilities.pop(0)]
             else:
                 path = paths_possibilities.pop(0)
-
             x,y = path[-1] # Assigne à x,y les dernières valeurs du chemin en construction
 
             if (x,y) == pos_player: # Vérifie si ce chemin atteint la destination
@@ -210,7 +208,7 @@ class Monster (Entity) :
 
                 '''Recherche des directions possibles'''
                 coord_to_check = [ (x+1,y), (x-1,y), (x,y+1), (x,y-1)] # 4 Directions
-                next_pos = [] # Var pour stocker les nouvelles positions possibles
+                next_pos = list() # Var pour stocker les nouvelles positions possibles
                 for next_coord in coord_to_check:
                     if self.map[next_coord[0]][next_coord[1]] != '#' and next_coord not in visited:
                         next_pos.append(next_coord)
@@ -228,54 +226,19 @@ class Monster (Entity) :
 '''Fonctions'''
 
 
-def displayAll(map,player : Player,window) :
+def displayAll(map,player : Player, monster : Monster,window) :
     """ Affiche tous les éléments du jeu en 2D sur la fenêtre graphique """
     for i in range (len(map)) :
         for j in range (len(map[i])) :
             if map[i][j] == "#" :
                 #Si mur : Dessine Cube Noir
-                pygame.draw.rect(window,pygame.Color(0,0,0),(480/len(map)*j,480/len(map)*i,int(480/len(map)),int(480/len(map))))
-            else :
-                # Si en place vide : Dessine Cube Blanc
-                pygame.draw.rect(window,pygame.Color(255,255,255),(480/len(map)*j,480/len(map)*i,int(480/len(map)),int(480/len(map))))
+                pygame.draw.rect(window,pygame.Color(255,255,255),(480/len(map)/3*j,480/len(map)*i/3,int(480/len(map)/3),int(480/len(map)/3)))
     # Place le Joueur à sa position
-    pygame.draw.circle(window,pygame.Color(255,0,0),(int(player.pos.x),int(player.pos.y)),5)
-    player.drawAllRays()
+    pygame.draw.circle(window,pygame.Color(255,0,0),(int(player.pos.x)/3,int(player.pos.y)/3),5)
+    pygame.draw.circle(window,pygame.Color(0,0,255),(int(monster.pos.x/3),int(monster.pos.y/3)),5)
 
 
+def displayMonsterPlayer(player, monster, window) :
+    pygame.draw.circle(window,pygame.Color(255,0,0),(int(player.pos.x/3),int(player.pos.y/3)),5)
+    pygame.draw.circle(window,pygame.Color(125,125,125),(int(monster.pos.x/3),int(monster.pos.y/3)),5)
 
-    i = 0
-
-    cadrex = floor(posx/ 480 * len(self.map))
-    cadrey = floor(posy/ 480 * len(self.map))
-
-    while self.map[cadrey][cadrex] != "#" :
-        i += 1
-
-        facteurx = floor(posx+i)-posx
-
-        x2 = Vector.x*facteurx+posx
-        y2 = Vector.y*facteurx+posy
-
-        cadrex = floor(x2/ 480 * len(self.map))
-        cadrey = floor(y2/ 480 * len(self.map))
-        if self.map[cadrey][cadrex] == "#" :
-
-            distancey = math.sqrt((posx - x2)**2 + (posy - y2)**2)
-
-
-    if distancex > distancey :
-        return Vector2D(x2,y2)
-    else :
-        return Vector2D(x1,y1)
-
-
-def displayAll(map,player,window) :
-    for i in range (len(map)) :
-        for j in range (len(map[i])) :
-            if map[i][j] == "#" :
-                pygame.draw.rect(window,pygame.Color(0,0,0),(480/len(map)*j,480/len(map)*i,int(480/len(map)),int(480/len(map))))
-            else :
-                pygame.draw.rect(window,pygame.Color(255,255,255),(480/len(map)*j,480/len(map)*i,int(480/len(map)),int(480/len(map))))
-    pygame.draw.circle(window,pygame.Color(255,0,0),(int(player.pos.x),int(player.pos.y)),5)
-    player.drawAllRays()
