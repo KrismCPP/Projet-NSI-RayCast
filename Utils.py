@@ -2,7 +2,6 @@
 
 '''IMPORTATION DES MODULES'''
 import math
-from typing import Text
 
 from matplotlib import image
 
