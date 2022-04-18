@@ -12,6 +12,9 @@ import TwoDRaycast
 import pygame
 import laby
 
+'''Variables'''
+
+resolutionEcran = [640,480]
 
 '''Classe'''
 
@@ -40,7 +43,7 @@ class Camera (TwoDRaycast.Player) :
         """ Renvoie ue nuance de gris du mur selon la distance """
         if distance == float('inf') :
             return 0
-        blacktone = floor(distance/480 * 300)
+        blacktone = floor(distance/self.mapScale * 300)
         if blacktone > 255:
             blacktone = 255
         return 255-blacktone
@@ -90,13 +93,14 @@ class Camera (TwoDRaycast.Player) :
 
 #Fenetre Graphique
 pygame.init()
-window = pygame.display.set_mode((640,480))
+window = pygame.display.set_mode((resolutionEcran[0],resolutionEcran[1]))
 
 # Map Sous forme de Liste de Liste
 map = laby.generateur_laby()
+print(map)
 
 # Init du joueur
-player = Camera(90,0,50,50,map,window,(640,480))
+player = Camera(90,0,48,48                                          ,map,window,(resolutionEcran[0],resolutionEcran[1]))
 
 # Init des configurations du Monstre
 monstre = TwoDRaycast.Monster(0,(480//2,480//2),(floor(player.pos.x/ 480 * len(map)),floor(player.pos.y/ 480 * len(map))),map,window)
@@ -117,7 +121,7 @@ while True :
 
     #Permet d'actualiser la Page
     pygame.display.flip()
-    pygame.draw.rect(window,pygame.Color(0,0,0),(0,0,int(640),int(480)),0)
+    pygame.draw.rect(window,pygame.Color(0,0,0),(0,0,int(resolutionEcran[0]),int(resolutionEcran[1])),0)
 
     #Lance le Rendu 3D
     player.render3D(player.scanWalls())
