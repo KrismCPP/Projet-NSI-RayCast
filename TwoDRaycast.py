@@ -1,13 +1,12 @@
-"""Rendu 2D - Fonctions et Classes Utiles"""
-
+################################################################################
+################################################################################
+##################   Rendu 2D - Fonctions et Classes Utiles   ##################
+################################################################################
+################################################################################
 
 '''IMPORTATION DES MODULES'''
 
-from asyncio.windows_events import INFINITE
 from Utils import *
-from graphic_mansart import *
-from math import floor
-import pygame
 
 
 '''Classes'''
@@ -163,8 +162,16 @@ class Player(Entity):
         return walls
 
 
-    def drawAllRays(self) :
+    def arrival(self,pos_finale):
         """
+        Renvoie True si le joueur est sur la position finale
+        False dans le cas contraire
+        """
+        return (floor(self.pos.x/ self.mapScale * len(self.map)), floor(self.pos.y/ self.mapScale * len(self.map))) == pos_finale
+
+
+    def drawAllRays(self) :
+        """ FONCTION POUR DÉBOGAGE
         Trace les différents vecteurs entre le joueur et les murs
         sur son champ de vision
         """
@@ -175,7 +182,6 @@ class Player(Entity):
             newVector = rotateVector(self.dir,angle)
 
             self.drawRay(self.findWall(newVector))
-
 
 
 class Monster (Entity) :
@@ -198,8 +204,6 @@ class Monster (Entity) :
         """
         # Adapte les coordonnées du joueur par rapport a la liste de liste 'map'
         pos_player = (floor(pos_player[1]/ self.mapScale * len(self.map)), floor(pos_player[0]/ self.mapScale * len(self.map)))
-        print(pos_player)
-        print(self.pos_list)
 
         paths_possibilities = [self.pos_list] # Stockera tous les chemins enivisageable au fur et à mesure
         visited = {} #Dictionnaire pour conserver les positions visitées

@@ -1,8 +1,13 @@
-"""Classe et Fonctions utiles au fonctionnement du Jeu"""
+################################################################################
+################################################################################
+###########   Classe et Fonctions utiles au fonctionnement du Jeu   ############
+################################################################################
+################################################################################
 
 '''IMPORTATION DES MODULES'''
 import math
-
+from math import floor
+import pygame
 from matplotlib import image
 
 
@@ -24,9 +29,7 @@ def rotateVector(Vector,angle) :
 
     return Vector2D(round(x1*math.cos(angle) - y1*math.sin(angle),5), round(x1*math.sin(angle) + y1*math.cos(angle),5))
 
-    
+
 Wall = image.imread('mur.png')
 Door = image.imread('porte.png')
-
-print(len(Wall[3][3]))
 
