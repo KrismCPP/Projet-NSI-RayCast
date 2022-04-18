@@ -18,7 +18,7 @@ Ajouter des murs autour de ce cette cellule , et mettre ces murs dans une liste
 
 
 import random
-
+from Utils import *
 
 ###Affichage console du labyrinthe###
 def Affichage(laby):
@@ -241,9 +241,9 @@ def generateur_laby(taille_laby):
 
     # Fixe l'entrée
     for i in range(0, largeur):
-    	if (laby[2][i] == ' '):
+    	if (laby[1][i] == ' '):
     		#laby[1][i] = '@'
-    		pos_depart = (1,i)
+    		pos_depart = Vector2D(i,1)
     		break
     # Fixe la sortie
     for i in range(largeur-1, 0, -1):

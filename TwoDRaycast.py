@@ -126,7 +126,7 @@ class Player(Entity):
             y2 = Vector.y*facteurx+posy
 
             cadrex = floor(x2/ self.mapScale * len(self.map))
-            cadrey = floor(y2/ 480 * len(self.map))
+            cadrey = floor(y2/ self.mapScale * len(self.map))
 
             if cadrex > len(self.map)-1 or cadrey > len(self.map)-1 :
                 return Vector2D(float('inf'),float('inf'))
@@ -197,7 +197,7 @@ class Monster (Entity) :
         Renvoie une liste de plusieurs tuple contenant le chemin pour aller jusqu'au joueur
         """
         # Adapte les coordonnées du joueur par rapport a la liste de liste 'map'
-        pos_player = (floor(pos_player[1]/ 480 * len(self.map)), floor(pos_player[0]/ 480 * len(self.map)))
+        pos_player = (floor(pos_player[1]/ self.mapScale * len(self.map)), floor(pos_player[0]/ self.mapScale * len(self.map)))
 
         paths_possibilities = [self.pos_list] # Stockera tous les chemins enivisageable au fur et à mesure
         visited = {} #Dictionnaire pour conserver les positions visitées
@@ -243,7 +243,7 @@ def displayAll(map,player : Player, monster : Monster,window) :
         for j in range (len(map[i])) :
             if map[i][j] == "#" :
                 #Si mur : Dessine Cube Noir
-                pygame.draw.rect(window,pygame.Color(255,255,255),(480/len(map)/3*j,480/len(map)*i/3,int(480/len(map)/3),int(480/len(map)/3)))
+                pygame.draw.rect(window,pygame.Color(255,255,255),(player.mapScale/len(map)/3*j,player.mapScale/len(map)*i/3,int(player.mapScale/len(map)/3),int(player.mapScale/len(map)/3)))
     # Place le Joueur à sa position
     pygame.draw.circle(window,pygame.Color(255,0,0),(int(player.pos.x)/3,int(player.pos.y)/3),5)
     pygame.draw.circle(window,pygame.Color(0,0,255),(int(monster.pos.x/3),int(monster.pos.y/3)),5)
