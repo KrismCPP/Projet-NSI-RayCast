@@ -27,7 +27,7 @@ class Camera (TwoDRaycast.Player) :
 
     def GetHeight(self, distance) :
         """Renvoie selon la distance le point de l'axe y du haut et du bas du mur"""
-        
+
         halfScreen = self.resolution[1]//2
 
         if distance == float('inf') :
@@ -99,13 +99,12 @@ window = pygame.display.set_mode((resolutionEcran[0],resolutionEcran[1]))
 # Map Sous forme de Liste de Liste
 laby_genere = laby.generateur_laby(20)
 map,spawn = laby_genere[0],laby_genere[1]
-print(map)
 
 # Init du joueur
 player = Camera(90,0,spawn.x*48,spawn.y*48,map,window,(resolutionEcran[0],resolutionEcran[1]))
 
 # Init des configurations du Monstre
-monstre = TwoDRaycast.Monster(0,(spawn.x*48 ,spawn.y*48),(floor(player.pos.x/ 480 * len(map)),floor(player.pos.y/ 480 * len(map))),map,window)
+monstre = TwoDRaycast.Monster(0,(spawn.x*48 ,spawn.y*48),(spawn.y,spawn.x),map,window)
 depart = time.time() # Début du chronomètre
 monster_arrival_time = 10 # en secondes
 nb_dep = 0 # Déplacement du Monstre en fonction du nb de dep du Joueur
@@ -129,7 +128,7 @@ while True :
     player.render3D(player.scanWalls())
 
     keys = pygame.key.get_pressed()
-    
+
     ''' TOUCHES ORDINAIRES '''
     # Tourne à gauche
     if keys[pygame.K_q] :

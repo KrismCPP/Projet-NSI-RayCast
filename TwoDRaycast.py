@@ -198,6 +198,8 @@ class Monster (Entity) :
         """
         # Adapte les coordonnées du joueur par rapport a la liste de liste 'map'
         pos_player = (floor(pos_player[1]/ self.mapScale * len(self.map)), floor(pos_player[0]/ self.mapScale * len(self.map)))
+        print(pos_player)
+        print(self.pos_list)
 
         paths_possibilities = [self.pos_list] # Stockera tous les chemins enivisageable au fur et à mesure
         visited = {} #Dictionnaire pour conserver les positions visitées
@@ -245,7 +247,7 @@ def displayAll(map,player : Player, monster : Monster,window) :
                 #Si mur : Dessine Cube Noir
                 pygame.draw.rect(window,pygame.Color(255,255,255),(player.mapScale/len(map)/3*j,player.mapScale/len(map)*i/3,int(player.mapScale/len(map)/3),int(player.mapScale/len(map)/3)))
     # Place le Joueur à sa position
-    pygame.draw.circle(window,pygame.Color(255,0,0),(int(player.pos.x)/3,int(player.pos.y)/3),5)
+    pygame.draw.circle(window,pygame.Color(255,0,0),(int(player.pos.x/3),int(player.pos.y/3)),5)
     pygame.draw.circle(window,pygame.Color(0,0,255),(int(monster.pos.x/3),int(monster.pos.y/3)),5)
 
 
