@@ -3,6 +3,7 @@
 
 '''IMPORTATION DES MODULES'''
 
+from asyncio.windows_events import INFINITE
 from Utils import *
 from graphic_mansart import *
 from math import floor
@@ -52,6 +53,8 @@ class Player(Entity):
 
     def distance(self, Vector) -> float:
         """ Renvoie la distance entre la pos du joueur et le point Vector"""
+        if Vector.x == float('inf') and Vector.y == float('inf') :
+            return float('inf')
         return math.sqrt((self.pos.x - Vector.x)**2 + (self.pos.y - Vector.y)**2)
 
 
@@ -98,6 +101,9 @@ class Player(Entity):
             cadrex = floor(x1/ 480 * len(self.map))
             cadrey = floor(y1/ 480 * len(self.map))
 
+            if cadrex > len(self.map)-1 or cadrey > len(self.map)-1 :
+                return Vector2D(float('inf'),float('inf'))
+
             # Vérifie si présence de mur à ce pt d'intersection
             if self.map[cadrey][cadrex] == "#" :
 
@@ -120,6 +126,10 @@ class Player(Entity):
 
             cadrex = floor(x2/ 480 * len(self.map))
             cadrey = floor(y2/ 480 * len(self.map))
+
+            if cadrex > len(self.map)-1 or cadrey > len(self.map)-1 :
+                return Vector2D(float('inf'),float('inf'))
+
             if self.map[cadrey][cadrex] == "#" :
 
                 distancey = math.sqrt((posx - x2)**2 + (posy - y2)**2)
