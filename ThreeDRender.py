@@ -3,12 +3,14 @@
 '''IMPORTATION DES MODULES'''
 
 from math import floor
+import re
 from tracemalloc import start
 from turtle import screensize
 from Utils import *
 import time
 import TwoDRaycast
 import pygame
+import laby
 
 
 '''Classe'''
@@ -21,7 +23,12 @@ class Camera (TwoDRaycast.Player) :
 
     def GetHeight(self, distance) :
         """Renvoie selon la distance le point de l'axe y du haut et du bas du mur"""
+        
         halfScreen = self.resolution[1]//2
+
+        if distance == float('inf') :
+            return halfScreen,halfScreen
+
         height = (962//30*self.resolution[1])/distance
 
         StartHeight = halfScreen - height//2
@@ -31,6 +38,8 @@ class Camera (TwoDRaycast.Player) :
 
     def GetBlackTone(self,distance) :
         """ Renvoie ue nuance de gris du mur selon la distance """
+        if distance == float('inf') :
+            return 0
         blacktone = floor(distance/480 * 300)
         if blacktone > 255:
             blacktone = 255
@@ -39,6 +48,8 @@ class Camera (TwoDRaycast.Player) :
     def GetPartOfWall(self, point, texture) :
         """ Retourne la partie du mur texturé """
         #Adapte les coordonnés du point pour qu'il soit utilisable
+        if point == Vector2D(float('inf'),float('inf')) :
+            return texture[0]
         pointModifie = point
         while pointModifie.y >= 48 :
             pointModifie.x -= 48
@@ -50,6 +61,8 @@ class Camera (TwoDRaycast.Player) :
     def drawTexturedLine(self,point,distance,duplicateLines,texture,partOfScreen) :
         """ Dessine la ligne des textures """
         height = self.GetHeight(distance)
+        if height == (self.resolution[1]//2,self.resolution[1]//2) :
+            return
         lenHeight = height[1]-height[0]
         line = self.GetPartOfWall(point,texture)
         toDark = self.GetBlackTone(distance)/255
@@ -80,24 +93,10 @@ pygame.init()
 window = pygame.display.set_mode((640,480))
 
 # Map Sous forme de Liste de Liste
-map = stringToList([
-    "#############",
-    "#   #       #",
-    "#   #  ##   #",
-    "#  #####    #",
-    "#  #   #    #",
-    "#  #   ###  #",
-    "#    #  #   #",
-    "#    ####   #",
-    "#    #      #",
-    "#    ###    #",
-    "#  ###      #",
-    "#       #   #",
-    "#############"
-    ])
+map = laby.generateur_laby()
 
 # Init du joueur
-player = Camera(90,0,480//2,480//2,map,window,(640,480))
+player = Camera(90,0,50,50,map,window,(640,480))
 
 # Init des configurations du Monstre
 monstre = TwoDRaycast.Monster(0,(480//2,480//2),(floor(player.pos.x/ 480 * len(map)),floor(player.pos.y/ 480 * len(map))),map,window)
@@ -145,7 +144,7 @@ while True :
         nb_dep += 1
     # Lance le Rendu 2D si TAB est appuyée
     elif keys[pygame.K_TAB]:
-        TwoDRaycast.displayAll(map,player,window)
+        TwoDRaycast.displayAll(map,player,monstre,window)
 
 
 
