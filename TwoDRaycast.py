@@ -19,6 +19,7 @@ class Entity :
         self.dir = rotateVector(Vector2D(1,0),angle*math.pi/180) #Vecteur du directeur par rapport à la direction où pointe Joueur
         self.map = map
         self.window = window
+        self.mapScale = 48 * len(self.map)
 
 class Player(Entity):
     """ Classe fille de Entity"""
@@ -83,8 +84,8 @@ class Player(Entity):
         '''Intersection sur l'axe des abscisse'''
         i = 0
         # Obtenir
-        cadrex = floor(posx/ 480 * len(self.map))
-        cadrey = floor(posy/ 480 * len(self.map))
+        cadrex = floor(posx/ self.mapScale * len(self.map))
+        cadrey = floor(posy/ self.mapScale * len(self.map))
 
         while self.map[cadrey][cadrex] != "#" :
             ''' Tant qu'il ne croise pas de mur '''
@@ -98,8 +99,8 @@ class Player(Entity):
             y1 = Vector.y*facteurx+posy
 
             # Adapte le pt d'intersection aux indice de la map
-            cadrex = floor(x1/ 480 * len(self.map))
-            cadrey = floor(y1/ 480 * len(self.map))
+            cadrex = floor(x1/ self.mapScale * len(self.map))
+            cadrey = floor(y1/ self.mapScale * len(self.map))
 
             if cadrex > len(self.map)-1 or cadrey > len(self.map)-1 :
                 return Vector2D(float('inf'),float('inf'))
@@ -113,8 +114,8 @@ class Player(Entity):
         ''' Intersection sur l'axe des ordonnées'''
         i = 0
 
-        cadrex = floor(posx/ 480 * len(self.map))
-        cadrey = floor(posy/ 480 * len(self.map))
+        cadrex = floor(posx/ self.mapScale * len(self.map))
+        cadrey = floor(posy/ self.mapScale * len(self.map))
 
         while self.map[cadrey][cadrex] != "#" :
             i += 1
@@ -124,7 +125,7 @@ class Player(Entity):
             x2 = Vector.x*facteurx+posx
             y2 = Vector.y*facteurx+posy
 
-            cadrex = floor(x2/ 480 * len(self.map))
+            cadrex = floor(x2/ self.mapScale * len(self.map))
             cadrey = floor(y2/ 480 * len(self.map))
 
             if cadrex > len(self.map)-1 or cadrey > len(self.map)-1 :
