@@ -10,10 +10,9 @@ from Laby_generator import *
 from random import randint
 import time
 
-
 ''' Fonction exécutant le Jeu '''
 
-def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min):
+def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,niveau):
     """ EXECUTE LE JEU
     Argument :
         resolutionEcran : Resolution de la fenêtre Graphique
@@ -28,7 +27,7 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min):
     map,spawn,arrival = laby_genere[0],laby_genere[1],laby_genere[2]
 
     # Init du joueur
-    player = Camera(90,0,spawn.x*48,spawn.y*48,map,window,(resolutionEcran[0],resolutionEcran[1]))
+    player = Camera(90,90,spawn.x*48+10,spawn.y*48+10,map,window,(resolutionEcran[0],resolutionEcran[1]))
 
     # Init des configurations du Monstre
     monstre = Monster(0,(spawn.x*48 ,spawn.y*48),(spawn.y,spawn.x),map,window)
@@ -57,6 +56,7 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min):
 
 
         ''' TOUCHES ORDINAIRES '''
+        """
         # Tourne à gauche
         if keys[pygame.K_q] :
             player.rotate(-10)
@@ -77,12 +77,12 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min):
         # Lance le Rendu 2D si TAB est appuyée
         elif keys[pygame.K_TAB]:
             displayAll(map,player,monstre,window)
-
+        """
 
 
 
         ''' TOUCHES SOUS PYGAME'''
-        """
+
         # Tourne à gauche
         if keys[pygame.K_a] :
             player.rotate(-10)
@@ -103,14 +103,14 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min):
         # Lance le Rendu 2D si TAB est appuyée
         elif keys[pygame.K_TAB]:
             displayAll(map,player, monstre ,window)
-        """
+
 
 
 
         #Si le joueur est arrivée au pt d'arrivée
         if player.arrival((arrival.x,arrival.y)) == True :
             print('ARRIVEE')
-            return randint(0,1)
+            return randint(1,2*niveau)
 
         # Si le temps "inoffensif" est dépassé
         if time.time() - depart > monster_arrival_time :
@@ -148,27 +148,28 @@ if __name__ == '__main__':
     window = pygame.display.set_mode((resolutionEcran[0],resolutionEcran[1]))
 
     #Génération de labyrinthe
-    taille_laby = 3
-    laby_genere = generateur_laby(taille_laby)
+    niveau = 3
+    laby_genere = generateur_laby(niveau)
 
     #Initialisation de la difficulté du Niveau
     monster_arrival_time = 10 # en secondes
     nb_dep_min = 10
 
     #______________## EXECUTION DU JEU ##______________#
-    result = main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min)
+    result = main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,niveau)
 
     # Tant que le Jeu n'est pas fini, lancement d'un nouveau niveau
-    while result == 1 :
+    while result > 1 :
 
         # On augmente la taille / difficulté du labyrinthe
-        taille_laby += 1
-        laby_genere = generateur_laby(taille_laby)
+        niveau += 1
+        laby_genere = generateur_laby(niveau)
         monster_arrival_time += 0 # en secondes
         nb_dep_min += 0
 
         # Actualisation du nouveau labytinthe
-        result = main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min)
+        result = main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,niveau)
+        print(result)
 
     # Fermeture du Jeu
     pygame.quit()
