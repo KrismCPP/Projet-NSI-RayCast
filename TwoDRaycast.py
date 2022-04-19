@@ -196,7 +196,7 @@ class Monster (Entity) :
         Déplace l'indice du Monstre à celle indiquée"""
         self.pos_list = new_pos
         self.pos.x,self.pos.y = self.pos_list[1]*48,self.pos_list[0]*48
-        print(self.pos.x,self.pos.y)
+
 
     def path_finding(self,pos_player,arrival):
         """

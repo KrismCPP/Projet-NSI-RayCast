@@ -36,11 +36,6 @@ class Hands(pygame.sprite.Sprite) :
         self.image = pygame.image.load("mains_animation/mains"+str(self.imageIndex)+".png")
 
 
-def stringToList(map) :
-    for i in range (len(map)) :
-        map[i] = list(map[i])
-    return map
-
 def rotateVector(Vector,angle) :
     x1 = Vector.x
     y1 = Vector.y
@@ -48,6 +43,15 @@ def rotateVector(Vector,angle) :
     return Vector2D(round(x1*math.cos(angle) - y1*math.sin(angle),5), round(x1*math.sin(angle) + y1*math.cos(angle),5))
 
 
-Wall = image.imread('mur.png')
-Door = image.imread('porte.png')
+#Iinitialisation des textures graphiques
+Wall = image.imread('texture/mur.png')
+Door = image.imread('texture/porte.png')
 
+
+def stringToList(map) :
+    """
+    Fonction de débogage
+    """
+    for i in range (len(map)) :
+        map[i] = list(map[i])
+    return map

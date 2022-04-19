@@ -106,11 +106,10 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
 
 
 
-
-        #Si le joueur est arrivée au pt d'arrivée
+        #Si le joueur est arrivé au pt d'arrivée
         if player.arrival((arrival.x,arrival.y)) == True :
             print('ARRIVEE')
-            return randint(1,2*niveau)
+            return randint(1,niveau)
 
         # Si le temps "inoffensif" est dépassé
         if time.time() - depart > monster_arrival_time :
@@ -122,7 +121,7 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
                 path = monstre.path_finding((player.pos.x,player.pos.y),(arrival.y,arrival.x) )
                 if not path :
                     # Si le Monstre et sur la case du Joueur
-                    print("GAME OVER")
+                    ("GAME OVER")
                     '''
                     pygame.quit()
                     exit()
@@ -164,8 +163,8 @@ if __name__ == '__main__':
         # On augmente la taille / difficulté du labyrinthe
         niveau += 1
         laby_genere = generateur_laby(niveau)
-        monster_arrival_time += 0 # en secondes
-        nb_dep_min += 0
+        monster_arrival_time -= 1 # en secondes
+        nb_dep_min -= 1
 
         # Actualisation du nouveau labytinthe
         result = main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,niveau)
