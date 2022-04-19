@@ -119,7 +119,7 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
             if nb_dep >= nb_dep_min :
 
                 # On cherche le chemin pour atteindre le joueur
-                path = monstre.path_finding((player.pos.x,player.pos.y) )
+                path = monstre.path_finding((player.pos.x,player.pos.y),(arrival.y,arrival.x) )
                 if not path :
                     # Si le Monstre et sur la case du Joueur
                     print("GAME OVER")
@@ -169,7 +169,6 @@ if __name__ == '__main__':
 
         # Actualisation du nouveau labytinthe
         result = main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,niveau)
-        print(result)
 
     # Fermeture du Jeu
     pygame.quit()

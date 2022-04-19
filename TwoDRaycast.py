@@ -196,8 +196,9 @@ class Monster (Entity) :
         Déplace l'indice du Monstre à celle indiquée"""
         self.pos_list = new_pos
         self.pos.x,self.pos.y = self.pos_list[1]*48,self.pos_list[0]*48
+        print(self.pos.x,self.pos.y)
 
-    def path_finding(self,pos_player):
+    def path_finding(self,pos_player,arrival):
         """
         Prend en arguement la position du joueur sous forme de tuple
         Renvoie une liste de plusieurs tuple contenant le chemin pour aller jusqu'au joueur
@@ -227,8 +228,10 @@ class Monster (Entity) :
                 coord_to_check = [ (x+1,y), (x-1,y), (x,y+1), (x,y-1)] # 4 Directions
                 next_pos = list() # Var pour stocker les nouvelles positions possibles
                 for next_coord in coord_to_check:
-                    if self.map[next_coord[0]][next_coord[1]] != '#' and next_coord not in visited:
-                        next_pos.append(next_coord)
+                    # Vérifie si la position testée n'est pas celle d'arrivée (Out of range)
+                    if next_coord != arrival :
+                        if self.map[next_coord[0]][next_coord[1]] != '#' and next_coord not in visited:
+                            next_pos.append(next_coord)
 
                 '''Stockage du nouveau chemin avec les autres possibilités'''
                 for coord in next_pos:
