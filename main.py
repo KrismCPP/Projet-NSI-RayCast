@@ -160,14 +160,6 @@ if __name__ == '__main__':
     #Menu principal / d'accueil
     menu_principal(window)
 
-    #Génération de labyrinthe
-    niveau = 3
-    laby_genere = generateur_laby(niveau)
-
-    #Initialisation de la difficulté du Niveau
-    monster_arrival_time = 10 # en secondes
-    nb_dep_min = 20
-
     #______________## EXECUTION DU JEU ##______________#
     # Variable permettant de tourner le jeu en continu
     play = 0
@@ -177,6 +169,13 @@ if __name__ == '__main__':
         # Variables permettant de tourner le jeu en continu
         play = 1
         result = 2
+
+        #Génération du labyrinthe 0
+        niveau = 3
+        laby_genere = generateur_laby(niveau)
+        #Initialisation de la difficulté du Niveau 0
+        monster_arrival_time = 10 # en secondes
+        nb_dep_min = 20
 
         # Tant que le Jeu n'est pas fini, lancement d'un nouveau niveau
         while result > 1 :
