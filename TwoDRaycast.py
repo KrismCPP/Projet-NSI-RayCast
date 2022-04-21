@@ -36,10 +36,14 @@ class Player(Entity):
             if self.distance(self.findWall(rotateVector(Vector2D(1,0),(self.angle)*math.pi/180))) > 5 :
                 self.pos.x += self.dir.x * speed
                 self.pos.y += self.dir.y * speed
+                if not StepsChannel.get_busy()  :
+                    StepsChannel.play(sfx["move"])
         if speed < 0:
             if self.distance(self.findWall(rotateVector(Vector2D(-1,0),(self.angle)*math.pi/180))) > 5 :
                 self.pos.x += self.dir.x * speed
                 self.pos.y += self.dir.y * speed
+                if not StepsChannel.get_busy() :
+                    StepsChannel.play(sfx["move"])
 
 
     def rotate(self, angle) :
@@ -196,6 +200,7 @@ class Monster (Entity) :
         Déplace l'indice du Monstre à celle indiquée"""
         self.pos_list = new_pos
         self.pos.x,self.pos.y = self.pos_list[1]*48,self.pos_list[0]*48
+        sfx["monster_tp"].play()
 
 
     def path_finding(self,pos_player,arrival):

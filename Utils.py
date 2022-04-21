@@ -55,3 +55,8 @@ def stringToList(map) :
     for i in range (len(map)) :
         map[i] = list(map[i])
     return map
+
+#Iinitialisation des sons du jeux
+pygame.mixer.init()
+sfx = {"lose_percentage" : pygame.mixer.Sound("sfx/lose_percentage.wav"), "lost" : pygame.mixer.Sound("sfx/lost.wav"), "menu_music" : pygame.mixer.Sound("sfx/menu_music.wav"), "mise" : pygame.mixer.Sound("sfx/mise.wav"), "monster_coming" : pygame.mixer.Sound("sfx/monster_coming.wav"), "monster_screamer" : pygame.mixer.Sound("sfx/monster_screamer.wav"), "monster_tp" : pygame.mixer.Sound("sfx/monster_tp.wav"), "move" : pygame.mixer.Sound("sfx/move.wav"),"select" : pygame.mixer.Sound("sfx/select.wav")}
+StepsChannel = pygame.mixer.Channel(1)
