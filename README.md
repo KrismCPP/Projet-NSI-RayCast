@@ -2,6 +2,7 @@
 
 ### Présentation du Projet / Jeu
 Dans le cadre de notre Projet de NSI pour l'année de Terminale, nous avons essayé de représenter Les Backrooms.
+
 Le concept de ce jeu est de s'échapper du labyrinthe le plus rapidement possible. Lorsque vous trouverez la sortie, le hasard décidera pour vous si vous aurez la vie saine et sauve, ou si vous devrez affronter un niveau plus difficile. Soyez rapide, au bout d'un certain temps, un monstre vous pourchassera, et vous n'y survivrait pas !
 
 ### Méthodes et Notions Utilisées
