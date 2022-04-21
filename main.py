@@ -34,6 +34,8 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
     depart = time.time() # Début du chronomètre
     nb_dep = 0 # Déplacement du Monstre en fonction du nb de dep du Joueur
 
+    font_nb = pygame.font.Font("font/DS-DIGIT.ttf", 24)
+
 
     #______________## EXECUTION DU NIVEAU ##______________#
 
@@ -111,14 +113,19 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
             print('ARRIVEE')
             return randint(1,niveau)
 
+
+
         # Si le temps "inoffensif" est dépassé
         if time.time() - depart > monster_arrival_time :
+
+            timer = font_nb.render(str(round(time.time() - depart)), True,(255, 0, 0))
 
             # Tous les 5 déplacements du Joueur, le monstre se déplace
             if nb_dep >= nb_dep_min :
 
                 # On cherche le chemin pour atteindre le joueur
                 path = monstre.path_finding((player.pos.x,player.pos.y),(arrival.y,arrival.x) )
+                #print(path)
                 if not path :
                     # Si le Monstre et sur la case du Joueur
                     ("GAME OVER")
@@ -132,6 +139,10 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
 
                 # On réinitilise le nombre de déplacement du Joueur
                 nb_dep = 0
+        else :
+            timer = font_nb.render(str(round(time.time() - depart)), True,(0, 255, 0))
+
+        window.blit(timer, (resolutionEcran[0]-30, 20))
 
 '''PROGRAMME PRINCIPAL'''
 
