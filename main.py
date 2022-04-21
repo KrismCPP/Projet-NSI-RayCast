@@ -7,6 +7,7 @@
 '''IMPORTATION DES MODULES'''
 from ThreeDRender import *
 from Laby_generator import *
+from Interfaces import *
 from random import randint
 import time
 
@@ -80,7 +81,6 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
         """
 
 
-
         ''' TOUCHES SOUS PYGAME'''
 
         # Tourne à gauche
@@ -108,31 +108,38 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
 
         #Si le joueur est arrivé au pt d'arrivée
         if player.arrival((arrival.x,arrival.y)) == True :
-            print('ARRIVEE')
             return randint(1,niveau)
 
         # Si le temps "inoffensif" est dépassé
         if time.time() - depart > monster_arrival_time :
-            # Tous les 5 déplacements du Joueur, le monstre se déplace
+            # Tous les déplacements du Joueur sup a nb_dep_min, le monstre se déplace
             if nb_dep >= nb_dep_min :
 
                 # On cherche le chemin pour atteindre le joueur
                 path = monstre.path_finding((player.pos.x,player.pos.y),(arrival.y,arrival.x) )
+
                 if not path :
-                    # Si le Monstre et sur la case du Joueur
-                    print("GAME OVER")
+                    # Si le Monstre est déjà sur la case du Joueur
                     sfx["monster_screamer"].play()
                     while pygame.mixer.get_busy() :
                         pass
                     sfx["lost"].play()
-                    return 1
-                    '''
-                    pygame.quit()
-                    exit()
-                    '''
+                    #menu_gameover(window)
+                    return -1
+
                 else :
                     # On déplace la position du Monstre
                     monstre.move(path[0])
+                    path.pop(0)
+                    if not path :
+                        # Si le Monstre vient d'arriver sur la case du Joueur
+                        sfx["monster_screamer"].play()
+                        while pygame.mixer.get_busy() :
+                            pass
+                        sfx["lost"].play()
+                        #menu_gameover(window)
+                        return -1
+
 
                 # On réinitilise le nombre de déplacement du Joueur
                 nb_dep = 0
@@ -150,32 +157,46 @@ if __name__ == '__main__':
     pygame.init()
     window = pygame.display.set_mode((resolutionEcran[0],resolutionEcran[1]))
 
+    #Menu principal / d'accueil
+    menu_principal(window)
+
     #Génération de labyrinthe
     niveau = 3
     laby_genere = generateur_laby(niveau)
 
     #Initialisation de la difficulté du Niveau
     monster_arrival_time = 10 # en secondes
-    nb_dep_min = 30
+    nb_dep_min = 20
 
     #______________## EXECUTION DU JEU ##______________#
-    result = main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,niveau)
+    # Variable permettant de tourner le jeu en continu
+    play = 0
 
-    # Tant que le Jeu n'est pas fini, lancement d'un nouveau niveau
-    while result > 1 :
+    while play != 1 :
 
-        # On augmente la taille / difficulté du labyrinthe
-        niveau += 1
-        laby_genere = generateur_laby(niveau)
-        monster_arrival_time -= 1 # en secondes
-        nb_dep_min -= 1
+        # Variables permettant de tourner le jeu en continu
+        play = 1
+        result = 2
 
-        # Actualisation du nouveau labytinthe
-        result = main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,niveau)
+        # Tant que le Jeu n'est pas fini, lancement d'un nouveau niveau
+        while result > 1 :
 
-    # Fermeture du Jeu
-    pygame.quit()
-    exit()
+            # Actualisation du labytinthe
+            result = main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,niveau)
+
+            # On augmente la taille / difficulté du prochain labyrinthe
+            niveau += 1
+            laby_genere = generateur_laby(niveau)
+            monster_arrival_time -= 0.25 # en secondes
+            nb_dep_min -= 1
+
+        if result == -1 :
+            #Affiche le menu Gamover si le joueur s'est fait attrapé par le monstre
+            play = menu_gameover(window)
+        elif result == 1 :
+            # Afficher le menu arrivée si le joueur a reussi à sortir
+            play = menu_arrivee(window)
+
 
 ################################################################################
 ################################################################################
