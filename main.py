@@ -22,6 +22,7 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
         monster_arrival_time : A combien de temps le monstre doit apparaitre
         nb_dep_min : Nb de déplacement min du Joueur avant celui du Monstre
     """
+    global keyboard
     #______________## INITIALISATION DU NIVEAU ##______________#
 
     # Map Sous forme de Liste de Liste
@@ -35,6 +36,8 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
     depart = time.time() # Début du chronomètre
     nb_dep = 0 # Déplacement du Monstre en fonction du nb de dep du Joueur
 
+    font_nb = pygame.font.Font("font/DS-DIGIT.ttf", 24)
+    pixelife_font_monstre = pygame.font.Font("font/pixellife.ttf", 35)
 
     #______________## EXECUTION DU NIVEAU ##______________#
     sfx["lose_percentage"].play()
@@ -55,58 +58,38 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
 
         keys = pygame.key.get_pressed()
 
+        # Modifier la disposition des touches utilisées
+        if keys[pygame.K_ESCAPE]:
+            if keyboard == "AZERTY" : keyboard = "QWERTY"
+            elif keyboard == "QWERTY" : keyboard = "AZERTY"
 
-        ''' TOUCHES ORDINAIRES '''
-        """
+
         # Tourne à gauche
-        if keys[pygame.K_q] :
+        if keys[keyboards_rep[keyboard][1]] :
             player.rotate(-10)
 
         # Tourne à droite
-        elif keys[pygame.K_d]:
+        elif keys[keyboards_rep[keyboard][3]]:
             player.rotate(10)
 
         # Avance
-        elif keys[pygame.K_z]:
+        elif keys[keyboards_rep[keyboard][0]]:
             player.move(5)
             nb_dep += 1
 
         # Recule
-        elif keys[pygame.K_s]:
+        elif keys[keyboards_rep[keyboard][2]]:
             player.move(-5)
             nb_dep += 1
+
+        ''' POUR DEBOGAGE
         # Lance le Rendu 2D si TAB est appuyée
         elif keys[pygame.K_TAB]:
-            displayAll(map,player,monstre,window)
-        """
-
-
-        ''' TOUCHES SOUS PYGAME'''
-
-        # Tourne à gauche
-        if keys[pygame.K_a] :
-            player.rotate(-10)
-
-        # Tourne à droite
-        elif keys[pygame.K_d]:
-            player.rotate(10)
-
-        # Avance
-        elif keys[pygame.K_w]:
-            player.move(5)
-            nb_dep += 1
-
-        # Recule
-        elif keys[pygame.K_s]:
-            player.move(-5)
-            nb_dep += 1
-        # Lance le Rendu 2D si TAB est appuyée
-        elif keys[pygame.K_TAB]:
-            displayAll(map,player, monstre ,window)
+            displayAll(map,player, monstre ,window) '''
 
         #Affiche le pourcentage de chance de sortir
         exit_pourcent = 1/niveau*100
-        pourcent_surface = font.render('luck: ' + str(round(exit_pourcent,2)) + '%', False, (255, 255, 255))
+        pourcent_surface = font_nb.render('luck: ' + str(round(exit_pourcent,2)) + '%', False, (255, 255, 255))
         pourcent_rect = pourcent_surface.get_rect(center = (560,15))
         window.blit(pourcent_surface, pourcent_rect)
 
@@ -117,12 +100,12 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
         # Si le temps "inoffensif" est dépassé
         if time.time() - depart > monster_arrival_time :
             # Tous les déplacements du Joueur sup a nb_dep_min, le monstre se déplace
-            
+
             #Affiche un texte qui indique que le monstre commence à se déplacer
-            textsurface = pixelife_font.render('Tu es suivi !', False, (255, 255, 255))
-            text_rect = textsurface.get_rect(center = (125,20))
+            textsurface = pixelife_font_monstre.render('The Monster is coming...!', False, (255, 255, 255))
+            text_rect = textsurface.get_rect(center = (175,20))
             window.blit(textsurface, text_rect)
-            
+
             if nb_dep >= nb_dep_min :
 
                 # On cherche le chemin pour atteindre le joueur
@@ -134,20 +117,19 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
                     while pygame.mixer.get_busy() :
                         pass
                     sfx["lost"].play()
-                    #menu_gameover(window)
                     return -1
 
                 else :
                     # On déplace la position du Monstre
                     monstre.move(path[0])
                     path.pop(0)
+                    sfx["monster_coming"].play()
                     if not path :
                         # Si le Monstre vient d'arriver sur la case du Joueur
                         sfx["monster_screamer"].play()
                         while pygame.mixer.get_busy() :
                             pass
                         sfx["lost"].play()
-                        #menu_gameover(window)
                         return -1
 
 
@@ -157,6 +139,11 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
 '''PROGRAMME PRINCIPAL'''
 
 if __name__ == '__main__':
+
+    # Touches correspondantes selon le clavier pour Pygame
+    keyboards_rep = {"AZERTY" : [pygame.K_z,pygame.K_q,pygame.K_s,pygame.K_d],"QWERTY" : [pygame.K_w,pygame.K_a,pygame.K_s,pygame.K_d]}
+    # Disposition des touches à défaut
+    keyboard = "AZERTY"
 
     #______________## INITIALISATION DU JEU ##______________#
 
@@ -184,7 +171,7 @@ if __name__ == '__main__':
         niveau = 3
         laby_genere = generateur_laby(niveau)
         #Initialisation de la difficulté du Niveau 0
-        monster_arrival_time = 10 # en secondes
+        monster_arrival_time = 15 # en secondes
         nb_dep_min = 20
 
         # Tant que le Jeu n'est pas fini, lancement d'un nouveau niveau
