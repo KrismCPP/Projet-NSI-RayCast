@@ -113,6 +113,12 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
         # Si le temps "inoffensif" est dépassé
         if time.time() - depart > monster_arrival_time :
             # Tous les déplacements du Joueur sup a nb_dep_min, le monstre se déplace
+            
+            #Affiche un texte qui indique que le monstre commence à se déplacer
+            textsurface = pixelife_font.render('Tu es suivi !', False, (255, 255, 255))
+            text_rect = textsurface.get_rect(center = (125,20))
+            window.blit(textsurface, text_rect)
+            
             if nb_dep >= nb_dep_min :
 
                 # On cherche le chemin pour atteindre le joueur
