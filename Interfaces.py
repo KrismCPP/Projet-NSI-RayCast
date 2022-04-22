@@ -19,7 +19,7 @@ def menu_principal(screen):
     screen.blit(background,(-100,0))
 
     '''Creation de texte dans le menu de lancement'''
-    pygame.display.set_caption('Welcome to the backroom')
+    pygame.display.set_caption('backroom')
     textsurface = pixelife_font.render('Welcome to the backroom', False, (255, 255, 255))
     text_rect = textsurface.get_rect(center = (320,80)) #Permet de centrer le texte
     screen.blit(textsurface, text_rect)
