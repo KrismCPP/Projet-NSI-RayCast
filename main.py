@@ -104,7 +104,11 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
         elif keys[pygame.K_TAB]:
             displayAll(map,player, monstre ,window)
 
-
+        #Affiche le pourcentage de chance de sortir
+        exit_pourcent = 1/niveau*100
+        pourcent_surface = font.render('luck: ' + str(round(exit_pourcent,2)) + '%', False, (255, 255, 255))
+        pourcent_rect = pourcent_surface.get_rect(center = (560,15))
+        window.blit(pourcent_surface, pourcent_rect)
 
         #Si le joueur est arrivé au pt d'arrivée
         if player.arrival((arrival.x,arrival.y)) == True :
