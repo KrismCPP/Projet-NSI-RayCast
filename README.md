@@ -11,6 +11,11 @@ Le concept de ce jeu est de s'échapper du labyrinthe le plus rapidement possibl
 * La génération des Labyrinthes se base sur l'algorithme de Prim.
 * La recherche du chemin le plus court entre le Monstre et le Joueur se fait grâce à un parcours en BFS.
 
+### Nécessite
+* Python
+* Bibliothèques : PyGame Matplotlib
+* Sortie Audio
+
 ### Comment y Jouer
 * Executer le fichier Python main.py
 * Utiliser la souris sur les interfaces de Menu
