@@ -13,7 +13,7 @@ Le concept de ce jeu est de s'échapper du labyrinthe le plus rapidement possibl
 
 ### Nécessite
 * Python
-* Bibliothèques : PyGame Matplotlib
+* Bibliothèques : PyGame et Matplotlib
 * Sortie Audio
 
 ### Comment y Jouer
