@@ -90,7 +90,7 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
         #Affiche le pourcentage de chance de sortir
         exit_pourcent = 1/niveau*100
         pourcent_surface = font_nb.render('luck: ' + str(round(exit_pourcent,2)) + '%', False, (255, 255, 255))
-        pourcent_rect = pourcent_surface.get_rect(center = (560,15))
+        pourcent_rect = pourcent_surface.get_rect(center = (resolutionEcran[0]-80,15))
         window.blit(pourcent_surface, pourcent_rect)
 
         #Si le joueur est arrivé au pt d'arrivée
@@ -148,14 +148,14 @@ if __name__ == '__main__':
     #______________## INITIALISATION DU JEU ##______________#
 
     #Resolution
-    resolutionEcran = [640,480]
+    resolutionEcran = [640,420]
 
     #Fenetre Graphique
     pygame.init()
     window = pygame.display.set_mode((resolutionEcran[0],resolutionEcran[1]))
 
     #Menu principal / d'accueil
-    menu_principal(window)
+    menu_principal(window,resolutionEcran)
 
     #______________## EXECUTION DU JEU ##______________#
     # Variable permettant de tourner le jeu en continu
@@ -188,10 +188,10 @@ if __name__ == '__main__':
 
         if result == -1 :
             #Affiche le menu Gamover si le joueur s'est fait attrapé par le monstre
-            play = menu_gameover(window)
+            play = menu_gameover(window,resolutionEcran)
         elif result == 1 :
             # Afficher le menu arrivée si le joueur a reussi à sortir
-            play = menu_arrivee(window)
+            play = menu_arrivee(window,resolutionEcran)
 
 
 ################################################################################

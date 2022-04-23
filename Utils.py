@@ -18,24 +18,6 @@ class Vector2D :
         self.x = x
         self.y = y
 
-class Hands(pygame.sprite.Sprite) :
-    def __init__(self) -> None:
-        super(Hands, self).__init__()
-        self.image = pygame.image.load("mains_animation/mains1.png")
-        self.rect = self.image.get_rect()
-        self.clockChange = 1
-        self.currentClock = 0
-        self.imageIndex = 1
-    def anim(self) :
-        if self.currentClock == self.clockChange :
-            self.imageIndex += 1
-            self.currentClock = 0
-        if self.imageIndex > 6 :
-            self.imageIndex = 1
-        self.currentClock += 1
-        self.image = pygame.image.load("mains_animation/mains"+str(self.imageIndex)+".png")
-
-
 def rotateVector(Vector,angle) :
     x1 = Vector.x
     y1 = Vector.y
@@ -55,6 +37,7 @@ def stringToList(map) :
     for i in range (len(map)) :
         map[i] = list(map[i])
     return map
+
 
 #Iinitialisation des sons du jeux
 pygame.mixer.init()

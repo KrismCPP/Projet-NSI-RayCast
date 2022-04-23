@@ -15,7 +15,7 @@ class Camera (Player) :
     def __init__(self, fov, angle, x, y, map, window,resolution) -> None:
         super().__init__(fov, angle, x, y, map, window)
         self.resolution = resolution
-        self.hand = Hands()
+        self.hand = Hands(resolution)
         self.handGroup = pygame.sprite.Group()
         self.handGroup.add(self.hand)
 
@@ -72,3 +72,23 @@ class Camera (Player) :
         self.handGroup.draw(self.window)
         self.hand.anim()
 
+class Hands(pygame.sprite.Sprite) :
+    """Classe permettant l'affiche des mains"""
+    def __init__(self,resolutionEcran) -> None:
+        super(Hands, self).__init__()
+        self.resolutionEcran = resolutionEcran
+        image = pygame.image.load("mains_animation/mains1.png")
+        self.image = pygame.transform.scale(image, (self.resolutionEcran[0], self.resolutionEcran[1]))
+        self.rect = self.image.get_rect()
+        self.clockChange = 1
+        self.currentClock = 0
+        self.imageIndex = 1
+    def anim(self) :
+        if self.currentClock == self.clockChange :
+            self.imageIndex += 1
+            self.currentClock = 0
+        if self.imageIndex > 6 :
+            self.imageIndex = 1
+        self.currentClock += 1
+        image = pygame.image.load("mains_animation/mains"+str(self.imageIndex)+".png")
+        self.image = pygame.transform.scale(image, (self.resolutionEcran[0], self.resolutionEcran[1]))
