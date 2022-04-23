@@ -40,7 +40,7 @@ class Camera (Player) :
         """ Renvoie ue nuance de gris du mur selon la distance """
         if distance == float('inf') :
             return 0
-        blacktone = floor(distance/self.mapScale * 300)
+        blacktone = floor(distance/self.mapScale * 450)
         if blacktone > 255:
             blacktone = 255
         return 255-blacktone
