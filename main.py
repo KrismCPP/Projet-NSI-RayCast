@@ -64,23 +64,42 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
             elif keyboard == "QWERTY" : keyboard = "AZERTY"
 
 
-        # Tourne à gauche
-        if keys[keyboards_rep[keyboard][1]] :
-            player.rotate(-10)
+        # Avancer
+        if keys[keyboards_rep[keyboard][0]]:
+            # Si avance et tourne à gauche
+            if keys[keyboards_rep[keyboard][1]] :
+                player.rotate(-5)
 
-        # Tourne à droite
-        elif keys[keyboards_rep[keyboard][3]]:
-            player.rotate(10)
+            #Si avance et tourne à droite
+            elif keys[keyboards_rep[keyboard][3]] :
+                player.rotate(5)
 
-        # Avance
-        elif keys[keyboards_rep[keyboard][0]]:
+            # Avancer
             player.move(5)
             nb_dep += 1
 
-        # Recule
+        # Reculer
         elif keys[keyboards_rep[keyboard][2]]:
+            # Si recule et tourne à gauche
+            if keys[keyboards_rep[keyboard][1]] :
+                player.rotate(-10)
+
+            #Si recule et tourne à droite
+            elif keys[keyboards_rep[keyboard][3]] :
+                player.rotate(10)
+
+            # Reculer
             player.move(-5)
             nb_dep += 1
+
+
+        # Tourner à gauche uniquement
+        elif keys[keyboards_rep[keyboard][1]] :
+            player.rotate(-10)
+
+        # Tourner à droite uniquement
+        elif keys[keyboards_rep[keyboard][3]]:
+            player.rotate(10)
 
         ''' POUR DEBOGAGE
         # Lance le Rendu 2D si ECHAP est appuyée
