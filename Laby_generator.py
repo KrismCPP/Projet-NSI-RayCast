@@ -249,21 +249,21 @@ def generateur_laby(taille_laby):
     		pos_finale = Vector2D(i,hauteur-1)
     		break
 
-#### Modules ####
+    #### Modules ####
 
-###Module 1 : salle vide###
+    ###Module 1 : salle vide###
     if taille_laby >= 11:
 
         module_alea = randint(1,2)
         m_alea_k = randint(1,len(laby)-taille_laby//3-1)
         m_alea_i = randint(1,len(laby)-taille_laby//3-1)
         tl = taille_laby//2
-###Module 1 : salle vide###
+    ###Module 1 : salle vide###
         if module_alea == 1:
             for a in range (taille_laby//3):
                 for b in range(taille_laby//3):
                     laby[m_alea_k + a][m_alea_i+b] = ' '
-###Module 2 : salle avec mur au centre ###
+    ###Module 2 : salle avec mur au centre ###
         if module_alea == 2:
             for a in range (taille_laby//3):
                 for b in range(taille_laby//3):
