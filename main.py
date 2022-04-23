@@ -58,8 +58,8 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
 
         keys = pygame.key.get_pressed()
 
-        # Modifier la disposition des touches utilisées
-        if keys[pygame.K_ESCAPE]:
+        # Modifier la disposition des touches utilisées avec TAB
+        if keys[pygame.K_TAB]:
             if keyboard == "AZERTY" : keyboard = "QWERTY"
             elif keyboard == "QWERTY" : keyboard = "AZERTY"
 
@@ -83,8 +83,8 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
             nb_dep += 1
 
         ''' POUR DEBOGAGE
-        # Lance le Rendu 2D si TAB est appuyée
-        elif keys[pygame.K_TAB]:
+        # Lance le Rendu 2D si ECHAP est appuyée
+        elif keys[pygame.K_ESCAPE]:
             displayAll(map,player, monstre ,window) '''
 
         #Affiche le pourcentage de chance de sortir
