@@ -270,7 +270,7 @@ def generateur_laby(taille_laby):
                     laby[m_alea_k + a][m_alea_i+b] = ' '
             for c in range (tl // 2):
                 for v in range(tl // 2):
-                    laby[m_alea_k + c + tl //2][m_alea_i+ tl // 2] = '#'
+                    laby[m_alea_k + c + tl //2 - 1][m_alea_i+ tl // 2 - 1] = '#'
 
     return laby,pos_depart,pos_finale
 
