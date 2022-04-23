@@ -87,11 +87,16 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
         elif keys[pygame.K_ESCAPE]:
             displayAll(map,player, monstre ,window) '''
 
-        #Affiche le pourcentage de chance de sortir
+        #Affiche le pourcentage de chance de sortir en haut à droite
         exit_pourcent = 1/niveau*100
         pourcent_surface = font_nb.render('luck: ' + str(round(exit_pourcent,2)) + '%', False, (255, 255, 255))
         pourcent_rect = pourcent_surface.get_rect(center = (resolutionEcran[0]-80,15))
         window.blit(pourcent_surface, pourcent_rect)
+
+        #Affiche le niveau en cours en bas à droite
+        level_affiche = font_nb.render('Level : ' + str(niveau - 3), False, (255, 255, 255))
+        level_rect = pourcent_surface.get_rect(center = (resolutionEcran[0]-40,resolutionEcran[1]-15))
+        window.blit(level_affiche, level_rect)
 
         #Si le joueur est arrivé au pt d'arrivée
         if player.arrival((arrival.x,arrival.y)) == True :
@@ -101,7 +106,7 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
         if time.time() - depart > monster_arrival_time :
             # Tous les déplacements du Joueur sup a nb_dep_min, le monstre se déplace
 
-            #Affiche un texte qui indique que le monstre commence à se déplacer
+            #Affiche un texte qui indique que le monstre commence à se déplacer en haut à gauche
             textsurface = pixelife_font_monstre.render('The Monster is coming...!', False, (255, 255, 255))
             text_rect = textsurface.get_rect(center = (175,20))
             window.blit(textsurface, text_rect)
@@ -148,7 +153,7 @@ if __name__ == '__main__':
     #______________## INITIALISATION DU JEU ##______________#
 
     #Resolution
-    resolutionEcran = [640,420]
+    resolutionEcran = [960,720]
 
     #Fenetre Graphique
     pygame.init()
