@@ -14,7 +14,7 @@ Le concept de ce jeu est de s'échapper du labyrinthe le plus rapidement possibl
 ### Comment y Jouer
 * Executer le fichier Python main.py
 * Utiliser la souris sur les interfaces de Menu
-* Utiliser les flèches directionnelles ZQSD ou WASD (Modifiable avec la touche ECHAP)
+* Utiliser les flèches directionnelles ZQSD ou WASD (Modifiable avec la touche TAB)
 
 ### Membres Participants
 * Eliot Rabin
