@@ -12,6 +12,7 @@ from Utils import *
 '''Classes'''
 
 class Entity :
+    """ Classe contenant toutes les Entités du jeu (Monstre et Joueur)"""
     def __init__(self,x,y,map,angle,window) :
         self.pos = Vector2D(x,y) #Position du Joueur
         self.angle = angle #Direction où pointe Joueur
@@ -252,7 +253,8 @@ class Monster (Entity) :
 
 
 def displayAll(map,player : Player, monster : Monster,window) :
-    """ Affiche tous les éléments du jeu en 2D sur la fenêtre graphique """
+    """ FONCTION DE DEBOGAGE
+    Affiche tous les éléments du jeu en 2D sur la fenêtre graphique """
     for i in range (len(map)) :
         for j in range (len(map[i])) :
             if map[i][j] == "#" :
@@ -264,6 +266,7 @@ def displayAll(map,player : Player, monster : Monster,window) :
 
 
 def displayMonsterPlayer(player, monster, window) :
+    """ FONCTION DE DEBOGAGE """
     pygame.draw.circle(window,pygame.Color(255,0,0),(int(player.pos.x/3),int(player.pos.y/3)),5)
     pygame.draw.circle(window,pygame.Color(125,125,125),(int(monster.pos.x/3),int(monster.pos.y/3)),5)
 

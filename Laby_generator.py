@@ -258,12 +258,12 @@ def generateur_laby(taille_laby):
         m_alea_k = randint(1,len(laby)-taille_laby//3-1)
         m_alea_i = randint(1,len(laby)-taille_laby//3-1)
         tl = taille_laby//2
-    ###Module 1 : salle vide###
+###Module 1 : salle vide###
         if module_alea == 1:
             for a in range (taille_laby//3):
                 for b in range(taille_laby//3):
                     laby[m_alea_k + a][m_alea_i+b] = ' '
-    ###Module 2 : salle avec mur au centre ###
+###Module 2 : salle avec mur au centre ###
         if module_alea == 2:
             for a in range (taille_laby//3):
                 for b in range(taille_laby//3):
@@ -276,15 +276,15 @@ def generateur_laby(taille_laby):
 
 
 '''Affichage console du labyrinthe'''
-##def Affichage(laby):
-##    """FONCTION POUR DEBOGAGE"""
-##    largeur = hauteur = len(laby)
-##    for i in range(0, hauteur):
-##        for j in range(0, largeur):
-##            if (laby[i][j] == 'n'):
-##                print(str(laby[i][j]), end=" ")
-##            elif (laby[i][j] == ' '):
-##                print(str(laby[i][j]), end=" ")
-##            else:
-##                print(str(laby[i][j]), end=" ")
-##        print('\n')
+def Affichage(laby):
+    """FONCTION POUR DEBOGAGE"""
+    largeur = hauteur = len(laby)
+    for i in range(0, hauteur):
+        for j in range(0, largeur):
+            if (laby[i][j] == 'n'):
+                print(str(laby[i][j]), end=" ")
+            elif (laby[i][j] == ' '):
+                print(str(laby[i][j]), end=" ")
+            else:
+                print(str(laby[i][j]), end=" ")
+        print('\n')

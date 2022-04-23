@@ -70,7 +70,7 @@ class Camera (Player) :
         duplicateLines = math.ceil(1/len(scans)*self.resolution[0])
         for i in range (len(scans)) :
             self.drawTexturedLine(scans[i][1],scans[i][0],duplicateLines,Wall,i)
-        if self.hands : 
+        if self.hands :
             self.handGroup.draw(self.window)
             self.hand.anim()
 
@@ -86,6 +86,9 @@ class Hands(pygame.sprite.Sprite) :
         self.currentClock = 0
         self.imageIndex = 1
     def anim(self) :
+        """
+        Permet d'animer les mains
+        """
         if self.currentClock == self.clockChange :
             self.imageIndex += 1
             self.currentClock = 0

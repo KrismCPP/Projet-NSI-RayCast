@@ -5,9 +5,8 @@
 ################################################################################
 
 '''IMPORTATION DES MODULES'''
-from turtle import st
 from Utils import *
-from ThreeDRender import * 
+from ThreeDRender import *
 from Laby_generator import *
 
 '''Fonctions '''
@@ -19,10 +18,12 @@ pixelife_font = pygame.font.Font("font/pixellife.TTF", 50) #importation de polic
 def menu_principal(screen,resolutionEcran):
     """ Affiche l'interface du Menu Principal"""
     '''Importation et mise en place de l'image de fond du menu'''
-    
+
+    # Affiche un Labyrinthe en tournant à 360
     BackGroundLaby = generateur_laby(12)
     startPosX,startPosY = (len(BackGroundLaby[0])-1)//2,(len(BackGroundLaby[0])-1)//2
-    
+
+    # Joueur au milieu de la map / Vérifie si position valide
     index = 0
     nbOfSearch = 1
     while BackGroundLaby[0][startPosY][startPosX] == "#" :
@@ -49,16 +50,17 @@ def menu_principal(screen,resolutionEcran):
             if BackGroundLaby[0][startPosY][startPosX] == "#" :
                 startPosY += nbOfSearch
         index += 1
-        
-    
-    BackGroudCamera = Camera(90,0,startPosX*48,startPosY*48,BackGroundLaby[0],screen,(resolutionEcran[0],resolutionEcran[1]), False)
+
+    # Lance l'affichage du Menu avec un Labyrinthe
+    BackGroundCamera = Camera(90,0,startPosX*48,startPosY*48,BackGroundLaby[0],screen,(resolutionEcran[0],resolutionEcran[1]), False)
 
     pygame.draw.rect(screen,pygame.Color(0,0,0),(0,0,int(resolutionEcran[0]),int(resolutionEcran[1])),0)
-    BackGroudCamera.render3D(BackGroudCamera.scanWalls())
+    BackGroundCamera.render3D(BackGroundCamera.scanWalls())
 
     '''Creation de texte dans le menu de lancement'''
     pygame.display.set_caption('backroom')
     def texte() :
+        """ Affiche le texte sur le menu"""
         textsurface = pixelife_font.render('Welcome to the backroom', False, (255, 255, 255))
         text_rect = textsurface.get_rect(center = (resolutionEcran[0]//2,resolutionEcran[0]//2 - resolutionEcran[0]//3)) #Permet de centrer le texte
         screen.blit(textsurface, text_rect)
@@ -78,12 +80,16 @@ def menu_principal(screen,resolutionEcran):
 
 
     while True :
-        mouse = pygame.mouse.get_pos()
+
+        # Tourne sur lui-même
         pygame.draw.rect(screen,pygame.Color(0,0,0),(0,0,int(resolutionEcran[0]),int(resolutionEcran[1])),0)
-        BackGroudCamera.rotate(0.5)
-        BackGroudCamera.render3D(BackGroudCamera.scanWalls())
+        BackGroundCamera.rotate(0.5)
+        BackGroundCamera.render3D(BackGroundCamera.scanWalls())
         texte()
         pygame.display.flip()
+
+        mouse = pygame.mouse.get_pos()
+
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT: #Permet de fermer le jeu
