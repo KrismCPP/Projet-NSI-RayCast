@@ -23,7 +23,7 @@ Ajouter des murs autour de ce cette cellule , et met ces murs dans une liste
 """
 
 '''IMPORTATION DES MODULES'''
-import random
+from random import *
 from Utils import *
 
 
@@ -123,8 +123,8 @@ def generateur_laby(taille_laby):
 
 
     #On commence par choisir le point initial de la construction du labyrinthe
-    pos_depart_h = int(random.random()*hauteur)
-    pos_depart_l = int(random.random()*largeur)
+    pos_depart_h = int(random()*hauteur)
+    pos_depart_l = int(random()*largeur)
 
     #On verifie que les valeurs soient comprises dans notre "tableau"
     if (pos_depart_h == 0):
@@ -160,7 +160,7 @@ def generateur_laby(taille_laby):
 
     while (murs_liste):
 	   #On prend un mur aléatoirement dans notre liste puis on va le "verifier"
-        mur_aléa = murs_liste[int(random.random()*len(murs_liste))-1]
+        mur_aléa = murs_liste[int(random()*len(murs_liste))-1]
 
 ##################################################
        	# On verifie le mur en-dessous
@@ -248,7 +248,7 @@ def generateur_laby(taille_laby):
     		laby[hauteur-1][i] = ' '
     		pos_finale = Vector2D(i,hauteur-1)
     		break
-		
+
 #### Modules ####
 
 ###Module 1 : salle vide###
@@ -258,19 +258,19 @@ def generateur_laby(taille_laby):
         m_alea_k = randint(1,len(laby)-taille_laby//3-1)
         m_alea_i = randint(1,len(laby)-taille_laby//3-1)
         tl = taille_laby//2
-###Module 1 : salle vide###
-    if module_alea == 1:
-        for a in range (taille_laby//3):
-            for b in range(taille_laby//3):
-                laby[m_alea_k + a][m_alea_i+b] = ' '
-###Module 2 : salle avec mur au centre ###
-    if module_alea == 2:
-        for a in range (taille_laby//3):
-            for b in range(taille_laby//3):
-                laby[m_alea_k + a][m_alea_i+b] = ' '
-        for c in range (tl // 2):
-            for v in range(tl // 2):
-                laby[m_alea_k + c + tl //2][m_alea_i+ tl // 2] = '#'
+    ###Module 1 : salle vide###
+        if module_alea == 1:
+            for a in range (taille_laby//3):
+                for b in range(taille_laby//3):
+                    laby[m_alea_k + a][m_alea_i+b] = ' '
+    ###Module 2 : salle avec mur au centre ###
+        if module_alea == 2:
+            for a in range (taille_laby//3):
+                for b in range(taille_laby//3):
+                    laby[m_alea_k + a][m_alea_i+b] = ' '
+            for c in range (tl // 2):
+                for v in range(tl // 2):
+                    laby[m_alea_k + c + tl //2][m_alea_i+ tl // 2] = '#'
 
     return laby,pos_depart,pos_finale
 
