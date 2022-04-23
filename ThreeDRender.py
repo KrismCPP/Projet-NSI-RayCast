@@ -12,12 +12,13 @@ from TwoDRaycast import *
 
 class Camera (Player) :
     """ Classe Fille de Player """
-    def __init__(self, fov, angle, x, y, map, window,resolution) -> None:
+    def __init__(self, fov, angle, x, y, map, window,resolution, hands : bool) -> None:
         super().__init__(fov, angle, x, y, map, window)
         self.resolution = resolution
         self.hand = Hands(resolution)
         self.handGroup = pygame.sprite.Group()
         self.handGroup.add(self.hand)
+        self.hands = hands
 
     def GetHeight(self, distance) :
         """Renvoie selon la distance le point de l'axe y du haut et du bas du mur"""
@@ -69,8 +70,9 @@ class Camera (Player) :
         duplicateLines = math.ceil(1/len(scans)*self.resolution[0])
         for i in range (len(scans)) :
             self.drawTexturedLine(scans[i][1],scans[i][0],duplicateLines,Wall,i)
-        self.handGroup.draw(self.window)
-        self.hand.anim()
+        if self.hands : 
+            self.handGroup.draw(self.window)
+            self.hand.anim()
 
 class Hands(pygame.sprite.Sprite) :
     """Classe permettant l'affiche des mains"""

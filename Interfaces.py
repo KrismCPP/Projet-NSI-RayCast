@@ -5,7 +5,10 @@
 ################################################################################
 
 '''IMPORTATION DES MODULES'''
+from turtle import st
 from Utils import *
+from ThreeDRender import * 
+from Laby_generator import *
 
 '''Fonctions '''
 
@@ -16,25 +19,59 @@ pixelife_font = pygame.font.Font("font/pixellife.TTF", 50) #importation de polic
 def menu_principal(screen,resolutionEcran):
     """ Affiche l'interface du Menu Principal"""
     '''Importation et mise en place de l'image de fond du menu'''
-    background = pygame.image.load('interface/backroom_img.png')
-    background = pygame.transform.scale(background, (resolutionEcran[0], resolutionEcran[1]))
-    screen.blit(background,(0,0))
+    
+    BackGroundLaby = generateur_laby(12)
+    startPosX,startPosY = (len(BackGroundLaby[0])-1)//2,(len(BackGroundLaby[0])-1)//2
+    
+    index = 0
+    nbOfSearch = 1
+    while BackGroundLaby[0][startPosY][startPosX] == "#" :
+        if nbOfSearch >= len(BackGroundLaby) :
+            startPosX = BackGroundLaby[1].x
+            startPosY = BackGroundLaby[1].y
+        if index >= 4 :
+            index = 0
+            nbOfSearch += 1
+        if index == 0 :
+            startPosX += nbOfSearch
+            if BackGroundLaby[0][startPosY][startPosX] == "#" :
+                startPosX -= nbOfSearch
+        elif index == 1 :
+            startPosY += nbOfSearch
+            if BackGroundLaby[0][startPosY][startPosX] == "#" :
+                startPosY -= nbOfSearch
+        elif index == 3 :
+            startPosX -= nbOfSearch
+            if BackGroundLaby[0][startPosY][startPosX] == "#" :
+                startPosX += nbOfSearch
+        elif index == 4 :
+            startPosY -= nbOfSearch
+            if BackGroundLaby[0][startPosY][startPosX] == "#" :
+                startPosY += nbOfSearch
+        index += 1
+        
+    
+    BackGroudCamera = Camera(90,0,startPosX*48,startPosY*48,BackGroundLaby[0],screen,(resolutionEcran[0],resolutionEcran[1]), False)
+
+    pygame.draw.rect(screen,pygame.Color(0,0,0),(0,0,int(resolutionEcran[0]),int(resolutionEcran[1])),0)
+    BackGroudCamera.render3D(BackGroudCamera.scanWalls())
 
     '''Creation de texte dans le menu de lancement'''
     pygame.display.set_caption('backroom')
-    textsurface = pixelife_font.render('Welcome to the backroom', False, (255, 255, 255))
-    text_rect = textsurface.get_rect(center = (resolutionEcran[0]//2,resolutionEcran[0]//2 - resolutionEcran[0]//3)) #Permet de centrer le texte
-    screen.blit(textsurface, text_rect)
+    def texte() :
+        textsurface = pixelife_font.render('Welcome to the backroom', False, (255, 255, 255))
+        text_rect = textsurface.get_rect(center = (resolutionEcran[0]//2,resolutionEcran[0]//2 - resolutionEcran[0]//3)) #Permet de centrer le texte
+        screen.blit(textsurface, text_rect)
 
-    '''Creation du bouton pour lancer la partie'''
-    start_bouton = pixelife_font.render('Start' , True , (255, 255, 255))
-    start_text_rect = start_bouton.get_rect(center = (resolutionEcran[0]//2,(resolutionEcran[0]//5)*2))
-    screen.blit(start_bouton, start_text_rect)
+        '''Creation du bouton pour lancer la partie'''
+        start_bouton = pixelife_font.render('Start' , True , (255, 255, 255))
+        start_text_rect = start_bouton.get_rect(center = (resolutionEcran[0]//2,(resolutionEcran[0]//5)*2))
+        screen.blit(start_bouton, start_text_rect)
 
-    '''Creation du bouton pour quitter le jeu'''
-    quit_bouton = pixelife_font.render('Quit' , True , (255, 255, 255))
-    quit_text_rect = quit_bouton.get_rect(center = (resolutionEcran[0]//2,(resolutionEcran[0]//5) *3))
-    screen.blit(quit_bouton, quit_text_rect)
+        '''Creation du bouton pour quitter le jeu'''
+        quit_bouton = pixelife_font.render('Quit' , True , (255, 255, 255))
+        quit_text_rect = quit_bouton.get_rect(center = (resolutionEcran[0]//2,(resolutionEcran[0]//5) *3))
+        screen.blit(quit_bouton, quit_text_rect)
 
     '''Actualise l'affichage'''
     pygame.display.flip()
@@ -42,7 +79,11 @@ def menu_principal(screen,resolutionEcran):
 
     while True :
         mouse = pygame.mouse.get_pos()
-
+        pygame.draw.rect(screen,pygame.Color(0,0,0),(0,0,int(resolutionEcran[0]),int(resolutionEcran[1])),0)
+        BackGroudCamera.rotate(0.5)
+        BackGroudCamera.render3D(BackGroudCamera.scanWalls())
+        texte()
+        pygame.display.flip()
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT: #Permet de fermer le jeu
@@ -93,11 +134,6 @@ def menu_gameover(screen,resolutionEcran):
                     return 0
 
 def menu_arrivee(screen,resolutionEcran):
-    """ Affiche l'interface lorsque le jeu est gagné"""
-    '''Importation et mise en place de l'image de fond du menu'''
-    background = pygame.image.load('interface/sortie.png')
-    background = pygame.transform.scale(background, (resolutionEcran[0], resolutionEcran[1]))
-    screen.blit(background,(0,0))
 
     '''Creation du texte d'arrivée'''
     arriver_text = pixelife_font.render('Vous etes sorti' , True , (255, 255, 255))

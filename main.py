@@ -29,7 +29,7 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
     map,spawn,arrival = laby_genere[0],laby_genere[1],laby_genere[2]
 
     # Init du joueur
-    player = Camera(90,90,spawn.x*48+10,spawn.y*48+10,map,window,(resolutionEcran[0],resolutionEcran[1]))
+    player = Camera(90,90,spawn.x*48+10,spawn.y*48+10,map,window,(resolutionEcran[0],resolutionEcran[1]),True)
 
     # Init des configurations du Monstre
     monstre = Monster(0,(spawn.x*48 ,spawn.y*48),(spawn.y,spawn.x),map,window)
@@ -107,19 +107,19 @@ def main(resolutionEcran,window,laby_genere,monster_arrival_time,nb_dep_min,nive
             displayAll(map,player, monstre ,window) '''
 
         #Affiche le pourcentage de chance de sortir en haut à droite
-        exit_pourcent = 1/niveau*100
+        exit_pourcent = 1/(niveau-3)*100
         pourcent_surface = font_nb.render('luck: ' + str(round(exit_pourcent,2)) + '%', False, (255, 255, 255))
         pourcent_rect = pourcent_surface.get_rect(center = (resolutionEcran[0]-80,15))
         window.blit(pourcent_surface, pourcent_rect)
 
         #Affiche le niveau en cours en bas à droite
-        level_affiche = font_nb.render('Level : ' + str(niveau - 3), False, (255, 255, 255))
+        level_affiche = font_nb.render('Level : ' + str(niveau - 5), False, (255, 255, 255))
         level_rect = pourcent_surface.get_rect(center = (resolutionEcran[0]-40,resolutionEcran[1]-15))
         window.blit(level_affiche, level_rect)
 
         #Si le joueur est arrivé au pt d'arrivée
         if player.arrival((arrival.x,arrival.y)) == True :
-            return randint(1,niveau)
+            return randint(1,niveau-3)
 
         # Si le temps "inoffensif" est dépassé
         if time.time() - depart > monster_arrival_time :
@@ -192,7 +192,7 @@ if __name__ == '__main__':
         result = 2
 
         #Génération du labyrinthe 0
-        niveau = 3
+        niveau = 5
         laby_genere = generateur_laby(niveau)
         #Initialisation de la difficulté du Niveau 0
         monster_arrival_time = 15 # en secondes
